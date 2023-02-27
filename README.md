@@ -1,65 +1,77 @@
-# 📷Instagramcoolike
+# 🌸나랑 벚꽃보러 가지 않을래?
+
 ![share_link_image](https://user-images.githubusercontent.com/65995664/221506826-234c3499-3d48-459a-a0f0-9c63b705a005.png)
 
-
-<br>
-
+<br/>
+<br/>
 <p align="center">
-놀러 가자!
+애들아 놀러 가자!
 </p>
 
 
-### ✏️ 이 프로젝트를 시작하게 된 동기
+## ✏️ 이 프로젝트를 시작하게 된 동기
+#### 봄 한정 놀러가기 서비스를 만들자.
+- 연인 / 친구 / 가족한테 놀러가자는 메시지를 보내자!
+- 다가오는 벚꽃 시즌을 맞이하여, 단순히 놀러가자는 것에서 그치지 않고 벚꽃 보러 가기 전부터 설렘을 주기 위해 기획하게 되었습니다. 
 
 
 ## ⏳ 진행 기간
-2
+2023.02.22 ~ (진행중)
 
 ### 📃 프로젝트 진행 과정
+- 아이디어 도출 및 팀 선정
+- 개인별 자기소개 시간 및 팀 빌딩
+- 프로젝트 목적과 대상을 명확히 하기 위한 지도그리기 
+- 개인별 아이디어 스케치 토론 및 PL(Project Leader), UX 결정권자 선정
+- BDD & SDD 를 통한 설계 및 태스크 분배 (MVP)
+- 페어 프로그래밍 짝 지정 
+- 페어 프로그래밍을 활용한 개발 진행
 
 ## 🤖기술 스택
 
 ### 📚&nbsp;&nbsp;Frameworkes & Libraries
 
-- NEXT JS
-- tailwind
-- firebase
-- vercel
+<img alt="NextJS" src ="https://img.shields.io/badge/Next.js-000000?&style=flat&logo=Next.js&logoColor=white"/> <img alt="TypeScript" src ="https://img.shields.io/badge/TypeScript-3178C6?&style=flat&logo=TypeScript&logoColor=white"/><img alt="Vercel" src ="https://img.shields.io/badge/Vercel-000000?&style=flat&logo=Vercel&logoColor=white"/>
+<img alt="Firebase" src ="https://img.shields.io/badge/Firebase-FFCA28?&style=flat&logo=Firebase&logoColor=white"/>
+</br>
+<img alt="Git" src ="https://img.shields.io/badge/Git-F05032?&style=flat&logo=Git&logoColor=white"/> <img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717?&style=flat&logo=GitHub&logoColor=white"/> 
+</br>
 
+
+## [🔗 배포 URL](https://cherryblossom-ten.vercel.app/)
+Vercel을 활용하여 배포하였습니다.
 
 ## 👁‍🗨 데모
 
 
->> 예시
-|   Dashboard - upload post   |   Dashboard - save post     | 
-| :-------------------------: |  :-------------------------: | 
-| ![Dashboard - upload post](https://user-images.githubusercontent.com/65995664/171991129-e09deb1d-229a-4c13-865b-afec621ed705.gif)| ![Dashboard - save post](https://user-images.githubusercontent.com/65995664/172078062-0124e2ae-7b13-485e-8fd8-70ce5f2e9764.gif) |
-|  설명을 적으면 저장 됨       | 
+|   Intro    |   초대장 작성 - 배경 선택     |  초대장 작성 - 캐릭터, 스티커 선택 및 위치 지정 |
+| :-------------------------: |  :-------------------------: | :-------------------------: | 
+| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif)| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) | ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) |
 
-## 🗣 배포
+|   초대장 완성 - 다시 작성하기    |   초대장 완성 -  내 앨범에 담기     |  초대장 열기 |
+| :-------------------------: |  :-------------------------: | :-------------------------: | 
+| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif)| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) | ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) |
 
-<a href="[https://instagram-react.vercel.app/](https://cherryblossom-ten.vercel.app/)">프로젝트 보러가기 👈🏻</a>
 
 
 ## ⌨️ 실행 방법
 
-```jsx
+```tsx
+npm install
 
-```
+npm run dev
 
-</br>
-
-## 📃 협업 과정
-
-
-</br>
-    
+```    
   
 </br>
 
 ## 🔒 팀 코드 컨벤션
 
-- [ ] git commit message 컨벤션
+<details>
+<summary><h3>💬 커밋 컨벤션</h3></summary>
+<div markdown="1">
+
+#### 💬 Commit Type and Description
 
 | 커밋명   | 내용                                        |
 | -------- | ------------------------------------------- |
@@ -71,37 +83,66 @@
 | test     | 테스트 코드 추가                            |
 | chore    | 환경설정, 빌드 업무, 패키지 매니저 설정등.. |
 | hotfix   | 치명적이거나 급한 버그 수정                 |
-| remove   | 사용하지 않는 변수, 파일 etc 삭제           |
+| delete   | 사용하지 않는 변수, 파일 etc 삭제           |
+
+
+ 
+</div>
+</details>
 
 
 </br>
 
-## 🔨 사용 기술
-
-<img alt="HTML5" src ="https://img.shields.io/badge/HTML5-E34F26?&style=flat&logo=HTML5&logoColor=white"/> <img alt="CSS3" src ="https://img.shields.io/badge/CSS3-1572B6?&style=flat&logo=CSS3&logoColor=white"/> <img alt="JavaScript" src ="https://img.shields.io/badge/JavaScript-F7DF1E?&style=flat&logo=JavaScript&logoColor=white"/> <img alt="React" src ="https://img.shields.io/badge/React-61DAFB?&style=flat&logo=React&logoColor=white"/> <img alt="NextJS" src ="https://img.shields.io/badge/Next.js-000000?&style=flat&logo=Next.js&logoColor=white"/>
-
-<img alt="Axios" src ="https://img.shields.io/badge/Axios-5A29E4?&style=flat&logo=Axios&logoColor=white"/> <img alt="styled-components" src ="https://img.shields.io/badge/styled components-DB7093?&style=flat&logo=styled-components&logoColor=white"/> <img alt="react-responsive" src ="https://img.shields.io/badge/react responsive-000000?&style=flat&logoColor=white"/>
-
-<img alt="Git" src ="https://img.shields.io/badge/Git-F05032?&style=flat&logo=Git&logoColor=white"/> <img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717?&style=flat&logo=GitHub&logoColor=white"/> <img alt="Notion" src ="https://img.shields.io/badge/Notion-000000?&style=flat&logo=Notion&logoColor=white"/>
-
-</br>
 
 ## 📦 폴더 구조
 
 ```
-
+📦pages
+ ┣ 📂api
+ ┃ ┣ 📜hello.ts
+ ┃ ┗ 📜share.ts
+ ┣ 📂complete
+ ┃ ┗ 📜[img].tsx
+ ┣ 📂creation
+ ┃ ┗ 📜index.tsx
+ ┣ 📂intro
+ ┃ ┗ 📜index.tsx
+ ┣ 📂received
+ ┃ ┗ 📜[img].tsx
+ ┣ 📜_app.tsx
+ ┣ 📜_document.tsx
+ ┗ 📜index.tsx
+ 
+ 📦src
+ ┣ 📂components
+ ┃ ┣ 📂Creation
+ ┃ ┃ ┣ 📂Custom
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Display
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┗ 📂PageTitle
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂ToastMessage
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📜CompleteLayout.tsx
+ ┃ ┣ 📜InterActionCard.tsx
+ ┃ ┗ 📜Layout.tsx
+ ┣ 📂constants
+ ┃ ┗ 📜defaultSEO.ts
+ ┣ 📂lib
+ ┃ ┗ 📜firebase.ts
+ ┗ 📂utils
+ ┃ ┗ 📜index.ts
 ```
 
 </br>
 
 ## 👨‍👩‍👧‍👦 팀원
 
-| 조은지<br/>(팀장)                                                                                                | 고영훈<br/>(서기)                                                                                               | 김창희<br/>(팀원)                                                                                               | 박정민<br/>(팀원)                                                                                           |
-| ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| <img src="https://avatars.githubusercontent.com/u/95282989?s=96&v=4" alt="Joeunji0119" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/65995664?s=96&v=4" alt="YeonghunKO" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/45018724?s=96&v=4" alt="PiperChang" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/55550034?s=96&v=4" alt="ono212" width="100" height="100"> |
-| [Joeunji0119](https://github.com/Joeunji0119)                                                                    | [YeonghunKO](https://github.com/YeonghunKO)                                                                     | [PiperChang](https://github.com/PiperChang)                                                                     | [ono212](https://github.com/ono212)                                                                         |
 
-| 문지원<br/>(팀원)                                                                                                | 이상민<br/>(공지)                                                                                               | 이지원<br/>(팀원)                                                                                               | 조수진<br/>(팀원)                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| <img src="https://avatars.githubusercontent.com/u/78708082?s=96&v=4" alt="moonkorea00" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/28257740?s=96&v=4" alt="dltkdals224" with="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/86206374?s=96&v=4" alt="365supprot" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/110365677?v=4" alt="suzz-in" width="100" height="100"> |
-| [moonkorea00](https://github.com/moonkorea00)                                                                    | [dltkdals224](https://github.com/dltkdals224)                                                                   | [365support](https://github.com/365support)                                                                     | [suzz-in](https://github.com/suzz-in)                                                                    |
+
+|   찰리(PL)   |   애나(UX Leader)   |   세인트   |   아메   |   울버린   |   조조   |   셀   |
+|:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|
+|[@YeonghunKO](https://github.com/YeonghunKO)|[@애나](https://github.com/) | [@Seongtaek-H](https://github.com/Seongtaek-H)  | [@Lee-Yeseul](https://github.com/Lee-Yeseul) | [@seunghoonKang](https://github.com/seunghoonKang) | [@seonghun0828](https://github.com/seonghun0828) | [@devysi0827](https://github.com/devysi0827)|
+|<img src="https://avatars.githubusercontent.com/YeonghunKO" width="100">|<div width="100" alt="애나" />|<img src="https://avatars.githubusercontent.com/Seongtaek-H" width="100">|<img src="https://avatars.githubusercontent.com/Lee-Yeseul" width="100">|<img src="https://avatars.githubusercontent.com/seunghoonKang" width="100">|<img src="https://avatars.githubusercontent.com/seonghun0828" width="100">|<img src="https://avatars.githubusercontent.com/devysi0827" width="100">|
+<br>

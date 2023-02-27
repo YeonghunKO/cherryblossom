@@ -167,14 +167,20 @@ export default function Custom(props: CustomProps) {
       setSelectedSticker(null);
     }
     if (selectedItem === 'character') {
+      if (selectedCharacter === id) {  // 이미 클릭된 아이템 클릭 시 selectedCharacter null로 변경
+        setSelectedCharacter(null);
+        return;
+      }
       setSelectedCharacter(id);
-      setSelectedBackground(null);
       setSelectedSticker(null);
     }
     if (selectedItem === 'sticker') {
+      if (selectedSticker === id) {  // 이미 클릭된 아이템 클릭 시 selectedSticker null로 변경
+        setSelectedSticker(null);
+        return;
+      }
       setSelectedSticker(id);
       setSelectedCharacter(null);
-      setSelectedBackground(null);
     }
   };
 

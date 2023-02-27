@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Custom from '@/src/components/Creation/Custom';
-import Display from '@/src/components/Creation/Display';
+import Display, { removeCancelBtnFromDisplay } from '@/src/components/Creation/Display';
 import PageTitle from '@/src/components/Creation/PageTitle';
 import { saveImg } from '@/src/utils';
 import { useRouter } from 'next/router';
@@ -19,6 +19,8 @@ const Creation = () => {
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
   const [isTextEmpty, setIsTextEmpty] = useState(true);
   const handleClickCreation = async () => {
+    removeCancelBtnFromDisplay();  // 캐릭터/스티커 위의 X 버튼 삭제
+
     const filename = uuidv4();
     await saveImg('display', filename);
     const move = () =>
