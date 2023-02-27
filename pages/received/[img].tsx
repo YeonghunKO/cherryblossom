@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import { getImageUrlFromFirebase } from '@/src/utils';
+import { GetStaticPropsContext } from 'next';
 
 export default function Received() {
   const [isAnimationOver, setIsAnimationOver] = useState(false);
@@ -41,3 +42,18 @@ export default function Received() {
     </>
   );
 }
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+
+export const getStaticProps = ({ params }: GetStaticPropsContext) => {
+  return {
+    props: {
+      imageName: params?.img,
+    },
+  };
+};

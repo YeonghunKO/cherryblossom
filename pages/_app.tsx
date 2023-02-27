@@ -5,11 +5,17 @@ import type { AppProps } from 'next/app';
 
 import { DefaultSeo } from 'next-seo';
 import { DEFAULT_SEO } from '@/src/constants/defaultSEO';
+import { isEmptyObj } from '@/src/utils';
+import SEO from '@/src/components/common/SEO';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <DefaultSeo {...DEFAULT_SEO} />
+      {isEmptyObj(pageProps) ? (
+        <DefaultSeo {...DEFAULT_SEO} />
+      ) : (
+        <SEO imageName={pageProps.imageName} />
+      )}
       <Layout>
         <Component {...pageProps} />
       </Layout>
