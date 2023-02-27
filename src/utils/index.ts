@@ -1,4 +1,4 @@
-import { getStorage, ref, uploadString } from 'firebase/storage';
+import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { app } from '@/src/lib/firebase';
 
 import html2canvas from 'html2canvas';
@@ -20,7 +20,7 @@ const sendImgToFirebase = async (data: string, filename: string) => {
 };
 
 // 사용자가 이미지를 저장하려고 할 때
-const saveImgToUser = (uri: string, filename: string) => {
+export const saveImgToUser = (uri: string, filename: string) => {
   let link = document.createElement('a');
   if (typeof link.download === 'string') {
     link.href = uri;
@@ -30,5 +30,17 @@ const saveImgToUser = (uri: string, filename: string) => {
     document.body.removeChild(link);
   } else {
     window.open(uri);
+  }
+};
+
+export const getImageUrlFromFirebase = async (imageName: string): Promise<string> => {
+  const storage = getStorage();
+  const imageRef = ref(storage, imageName);
+  try {
+    const urlstring = await getDownloadURL(imageRef);
+    return urlstring;
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 };

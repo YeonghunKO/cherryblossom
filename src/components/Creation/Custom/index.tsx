@@ -81,25 +81,70 @@ const STICKER_IMAGE = [
   {
     id: 0,
     preview: 'pre_0.svg',
-    value: '0.svg',
+    value: '0.png',
   },
   {
     id: 1,
     preview: 'pre_1.svg',
-    value: '1.svg',
+    value: '1.png',
   },
+  {
+    id: 2,
+    preview: 'pre_2.svg',
+    value: '2.png',
+  },
+  {
+    id: 3,
+    preview: 'pre_3.svg',
+    value: '3.png',
+  },
+  {
+    id: 4,
+    preview: 'pre_4.svg',
+    value: '4.png',
+  },
+  {
+    id: 5,
+    preview: 'pre_5.svg',
+    value: '5.png',
+  },
+  {
+    id: 6,
+    preview: 'pre_6.svg',
+    value: '6.svg',
+  }
 ];
 
 const CHARACTER_IMAGE = [
   {
     id: 0,
     preview: 'pre_0.svg',
-    value: '0.svg',
+    value: '0.png',
   },
   {
     id: 1,
     preview: 'pre_1.svg',
-    value: '1.svg',
+    value: '1.png',
+  },
+  {
+    id: 2,
+    preview: 'pre_2.svg',
+    value: '2.png',
+  },
+  {
+    id: 3,
+    preview: 'pre_3.svg',
+    value: '3.png',
+  },
+  {
+    id: 4,
+    preview: 'pre_4.svg',
+    value: '4.png',
+  },
+  {
+    id: 5,
+    preview: 'pre_5.svg',
+    value: '5.png',
   },
 ];
 
@@ -151,7 +196,7 @@ export default function Custom(props: CustomProps) {
       </div>
       <div className="border-t border-solid border-1 border-blossom-darkGray my-[8px]"></div>
 
-      <div className="h-[230px] grid grid-cols-3 gap-4 overflow-scroll ">
+      <div className="h-[230px] grid grid-cols-3 gap-4 overflow-auto">
         {selectedItem === 'background' &&
           BACKGROUND_IMAGE.map(img => {
             return (

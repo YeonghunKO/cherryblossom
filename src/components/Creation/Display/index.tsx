@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ChangeEvent, MouseEvent, MutableRefObject, useEffect, useRef } from 'react';
+import { ChangeEvent, MouseEvent, MutableRefObject, useCallback, useEffect, useRef } from 'react';
 
 type CustomTypes = 'background' | 'character' | 'sticker';
 type ItemObjectType = {
@@ -39,15 +39,19 @@ export default function Display(props: DisplayProps) {
   const handlerDeleteItem = (e: MouseEvent) => {
     e.stopPropagation(); // click event가 버블링 되어 handlerClickDisplay가 호출되는 것을 방지
 
-    const items: ItemObjectType[] = JSON.parse(sessionStorage.getItem(selectedItem)); // 지울 게 있을때만 이 함수가 호출되기 때문에 null일 수 없음
-    const modifiedItems = items.filter(({ id }) => `item${id}` !== e.target.parentNode.id);
-    sessionStorage.setItem(selectedItem, JSON.stringify(modifiedItems));
+    customTypeArr.forEach((customType) => {  // session items 3개 순회하며 id에 해당하는 요소 삭제
+      const items: ItemObjectType[] = JSON.parse(sessionStorage.getItem(customType));
+      if (!items) return;
+      
+      const modifiedItems = items.filter(({ id }) => `item${id}` !== e.target.parentNode.id);
+      sessionStorage.setItem(customType, JSON.stringify(modifiedItems));
+    });
 
     e.target.parentNode.remove(); // DOM 트리에서 노드 삭제
   };
 
   const handlerClickDisplay = (e: MouseEvent) => {
-    if (!(selectedCharacter || selectedSticker)) {
+    if (selectedCharacter === null && selectedSticker === null) {
       // 캐릭터나 스티커 둘 중 어느 것도 선택하지 않았으면 함수 종료
       return;
     }
@@ -58,12 +62,15 @@ export default function Display(props: DisplayProps) {
     const offsetX = e.clientX - displayLeft; // offset은 display 내에서의 클릭 좌표 값이기 때문에 항상 같음
     const offsetY = e.clientY - displayTop;
 
-    // const selectedItemPath = `/images/background/0.jpeg`;
-    const selectedItemPath = `/images/${selectedItem}/${
-      selectedBackground || selectedCharacter || selectedSticker
-    }`; // 확장자까지 명시해줘야함
+    const selectedItemPath = `/${selectedItem}s/${
+      selectedCharacter === null? selectedSticker : selectedCharacter
+    }.png`;
 
-    let id = 0;
+    console.log(selectedBackground , selectedCharacter , selectedSticker, selectedItemPath);
+    
+
+    let id = sessionStorage.getItem('itemId') ? parseInt(sessionStorage.getItem('itemId')) + 1 : 0;
+    sessionStorage.setItem('itemId', id);
 
     const itemObject: ItemObjectType = {
       // session에 저장할 객체
@@ -76,9 +83,7 @@ export default function Display(props: DisplayProps) {
     const selectedItems = sessionStorage.getItem(selectedItem);
     if (selectedItems) {
       const items = JSON.parse(selectedItems);
-
-      id = items.length;
-      sessionStorage.setItem(selectedItem, JSON.stringify([...items, { ...itemObject, id }]));
+      sessionStorage.setItem(selectedItem, JSON.stringify([...items, itemObject]));
     } else {
       sessionStorage.setItem(selectedItem, JSON.stringify([itemObject]));
     }
@@ -96,15 +101,13 @@ export default function Display(props: DisplayProps) {
     }
   };
 
-  const paintItemInDisplay = (x: number, y: number, path: string, id: number) => {
+  const paintItemInDisplay = useCallback((x: number, y: number, path: string, id: number) => {
     const item = document.createElement('div');
     const cancelBtn = document.createElement('span');
     const img = document.createElement('img');
 
     cancelBtn.innerText = 'X';
     cancelBtn.addEventListener('click', e => handlerDeleteItem(e));
-
-    console.log(x, y);
 
     item.id = `item${id}`;
     item.setAttribute('style', 'position:absolute;');
@@ -121,31 +124,35 @@ export default function Display(props: DisplayProps) {
     item.appendChild(cancelBtn);
     item.appendChild(img);
     displayRef.current?.appendChild(item);
-  };
+  }, []);
 
-  useEffect(() => {
-    const displayRect = displayRef.current?.getBoundingClientRect();
-
-    customTypeArr.forEach(customType => {
-      // session에 저장되어 있는 customType 배열들을 순회
-      if (sessionStorage.getItem(customType)) {
-        const items: ItemObjectType[] = JSON.parse(sessionStorage.getItem(customType));
-
-        items.forEach(({ offsetX, offsetY, path, id }) => {
-          // 배열을 순회하며 저장된 좌표, path에 맞게 paint 호출
-          paintItemInDisplay(displayRect?.left + offsetX, displayRect?.top + offsetY, path, id);
-        });
-      }
-    });
-
-    if (selectedCharacter || selectedSticker) {
-      // 캐릭터, 스티커 둘 중 하나를 선택했을 때
+  useEffect(() => {    
+    if (selectedCharacter === null && selectedSticker === null) {  // 캐릭터, 스티커 둘 중 어느것도 선택하지 않았을 때
+      if (textareaRef.current) textareaRef.current.readOnly = false; // textarea 편집 가능
+    } else {  // 캐릭터, 스티커 둘 중 하나를 선택했을 때
       if (textareaRef.current) textareaRef.current.readOnly = true; // textarea 편집 불가
-    } else {
-      // 캐릭터, 스티커 둘 중 어느것도 선택하지 않았을 때
-      if (textareaRef.current) {
-        textareaRef.current.readOnly = false; // textarea 편집 가능
-      }
+    }
+
+    if (selectedBackground !== null) {
+      const img = document.createElement('img');
+      img.src = `/backgrounds/${selectedBackground}.svg`;
+      // displayRef.current.appendChild(img);
+      
+      displayRef.current.style = `background-image:url(/backgrounds/${selectedBackground}.svg)`;
+    }
+
+    if (displayRef.current?.children.length === 1) {  // children이 1이면 textarea만 존재하기 때문에 session에 저장된 items 렌더링
+      customTypeArr.forEach(customType => {
+        // session에 저장되어 있는 customType 배열들을 순회
+        if (sessionStorage.getItem(customType)) {
+          const items: ItemObjectType[] = JSON.parse(sessionStorage.getItem(customType));
+  
+          items.forEach(({ offsetX, offsetY, path, id }) => {
+            // 배열을 순회하며 저장된 좌표, path에 맞게 paint 호출
+            paintItemInDisplay(offsetX, offsetY, path, id);
+          });
+        }
+      });
     }
   }, [paintItemInDisplay, selectedBackground, selectedCharacter, selectedSticker]);
 

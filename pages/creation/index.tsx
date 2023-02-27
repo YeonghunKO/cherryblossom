@@ -11,26 +11,22 @@ import Head from 'next/head';
  * 초대장 생성 페이지
  */
 type CustomTypes = 'background' | 'character' | 'sticker';
-
 const Creation = () => {
   const router = useRouter();
-
   const [selectedItem, setSelectedItem] = useState<CustomTypes>('background');
   const [selectedBackground, setSelectedBackground] = useState<number | null>(null);
   const [selectedCharacter, setSelectedCharacter] = useState<number | null>(null);
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
-
   const [isTextEmpty, setIsTextEmpty] = useState(true);
-
-  const handleClickCreation = () => {
-    console.log(isTextEmpty);
+  const handleClickCreation = async () => {
     const filename = uuidv4();
-    saveImg('temp', filename);
-    router.push('/invitationComplete', {
-      query: {
-        imgURL: filename,
-      },
-    });
+    await saveImg('display', filename);
+    const move = () =>
+      router.push({
+        pathname: '/complete/[img]',
+        query: { img: filename },
+      });
+    setTimeout(move, 2000);
   };
 
   return (
@@ -61,8 +57,8 @@ const Creation = () => {
         disabled={isTextEmpty}
         onClick={handleClickCreation}
         className={`w-[360px] font-pretendard font-bold h-12 ${
-          isTextEmpty ? 'bg-blossom-gray' : ' bg-blossom-green'
-        } bg-blossom-gray fixed bottom-0 left-0 right-0`}
+          isTextEmpty ? 'bg-blossom-gray text-gray-400' : ' bg-blossom-green'
+        } bg-blossom-gray fixe left-0 right-0`}
       >
         초대장 완성하기
       </button>

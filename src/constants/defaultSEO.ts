@@ -9,7 +9,7 @@ export const DEFAULT_SEO = {
     description: '나랑 놀아라',
     images: [
       {
-        url: 'https://firebasestorage.googleapis.com/v0/b/cherryblossom-f61a7.appspot.com/o/share_link_image.png?alt=media&token=fe19fa2e-3fdf-41b0-b20f-cd22dffcb9c5',
+        url: 'https://firebasestorage.googleapis.com/v0/b/cherryblossom-f61a7.appspot.com/o/share_link_image.png?alt=media&token=e1687823-4f34-4269-bdca-d7982a0c22d8',
         width: 285,
         height: 167,
         alt: '벚꽃_디폴트_이미지',
