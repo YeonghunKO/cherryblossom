@@ -70,16 +70,14 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
             <button
               onClick={handleClickShareBtn}
               className={`${
-                checkClickedBtn.copy ? 'bg-btn-yellow' : 'bg-btn-yellow'
+                !checkClickedBtn.copy ? 'bg-btn-yellow' : 'bg-[#AFE6AD]'
               } h-[50px] grow-0 w-full rounded-[10px] border border-solid border-white cursor-pointer`}
             >
               <p>편지 보내기</p>
             </button>
             <button
               onClick={handleClickRewriteBtn}
-              className={`${
-                checkClickedBtn.copy ? 'bg-btn-yellow' : 'bg-btn-yellow'
-              } ml-[15px] w-full grow-0 h-[50px] rounded-[10px] border border-solid border-white cursor-pointer`}
+              className={`bg-btn-yellow ml-[15px] w-full grow-0 h-[50px] rounded-[10px] border border-solid border-white cursor-pointer`}
             >
               <p>다시 작성하기</p>
             </button>

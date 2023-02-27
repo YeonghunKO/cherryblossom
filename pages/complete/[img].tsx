@@ -11,13 +11,10 @@ export default function Complete() {
 
   const router = useRouter();
   const imageName = router.query.img as string;
-  console.log('imageName', imageName);
 
   useEffect(() => {
     const getUrlString = async () => {
       const getImageUrl = await getImageUrlFromFirebase(imageName);
-      console.log('getImageUrl', getImageUrl);
-
       setImageUrl(getImageUrl);
     };
     getUrlString();

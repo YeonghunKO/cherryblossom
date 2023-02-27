@@ -6,7 +6,9 @@ export const copyLink = async (
   setCheckClickedBtn: Dispatch<SetStateAction<{ copy: boolean; save: boolean }>>
 ) => {
   try {
-    await navigator.clipboard.writeText(`${window.location.origin}/received/${imageName}`);
+    await navigator.clipboard.writeText(
+      `https://cherryblossom-ten.vercel.app/received/${imageName}`
+    );
     setPopToastMsg(true);
     setCheckClickedBtn(prev => {
       return { ...prev, copy: true };
