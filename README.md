@@ -1,6 +1,7 @@
 # 🌸나랑 벚꽃보러 가지 않을래?
 
 ![share_link_image](https://user-images.githubusercontent.com/65995664/221506826-234c3499-3d48-459a-a0f0-9c63b705a005.png)
+![received](https://user-images.githubusercontent.com/65995664/221545781-3e2ac60d-9493-447e-8c03-54bdac8a4c53.png)
 
 <br/>
 <br/>
@@ -22,7 +23,7 @@
 - 아이디어 도출 및 팀 선정
 - 개인별 자기소개 시간 및 팀 빌딩
 - 프로젝트 목적과 대상을 명확히 하기 위한 지도그리기 
-- 개인별 아이디어 스케치 토론 및 PL(Project Leader), UX 결정권자 선정
+- 개인별 아이디어 스케치 토론 및 PL(Project Leader), UI/UX 결정권자 선정
 - BDD & SDD 를 통한 설계 및 태스크 분배 (MVP)
 - 페어 프로그래밍 짝 지정 
 - 페어 프로그래밍을 활용한 개발 진행
@@ -45,13 +46,20 @@ Vercel을 활용하여 배포하였습니다.
 ## 👁‍🗨 데모
 
 
+
+
+
+
+
+
+
 |   Intro    |   초대장 작성 - 배경 선택     |  초대장 작성 - 캐릭터, 스티커 선택 및 위치 지정 |
 | :-------------------------: |  :-------------------------: | :-------------------------: | 
-| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif)| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) | ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) |
+| ![intro_blossomm](https://user-images.githubusercontent.com/59612529/221550553-328e3dd6-3dc8-4bb6-a181-56d732da63e2.gif)| ![creation-bg](https://user-images.githubusercontent.com/59612529/221548354-7b96f68d-2b77-4e64-ac6a-760834d44776.gif) | ![creation-sticker](https://user-images.githubusercontent.com/59612529/221548696-0188bf9f-763a-4cd0-af82-5bba9d03b6ce.gif) |
 
-|   초대장 완성 - 다시 작성하기    |   초대장 완성 -  내 앨범에 담기     |  초대장 열기 |
+|   초대장 완성     |   초대장 완성 -  다시 보내기     |  초대장 열기 |
 | :-------------------------: |  :-------------------------: | :-------------------------: | 
-| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif)| ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) | ![intro_blossom](https://user-images.githubusercontent.com/59612529/221515585-7a65be88-74d0-40ba-9c75-06bffda1f187.gif) |
+| ![complete](https://user-images.githubusercontent.com/59612529/221549081-7f828335-cde7-4444-a9b4-36f5d7c229d3.gif)| ![backtocreation-](https://user-images.githubusercontent.com/59612529/221549377-69499f1b-459d-4a06-8573-783230e19458.gif) | ![received](https://user-images.githubusercontent.com/59612529/221549622-60dacbe2-5215-4931-9fd1-eaf1593fabc9.gif) |
 
 
 
@@ -151,8 +159,8 @@ npm start
 
 
 
-|   찰리(PL)   |   애나(UX Leader)   |   세인트   |   아메   |   울버린   |   조조   |   셀   |
+|   찰리(PL)   |   애나(UI/UX Leader)   |   세인트   |   아메   |   울버린   |   조조   |   셀   |
 |:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|
-|[@YeonghunKO](https://github.com/YeonghunKO)|[@애나](https://github.com/) | [@Seongtaek-H](https://github.com/Seongtaek-H)  | [@Lee-Yeseul](https://github.com/Lee-Yeseul) | [@seunghoonKang](https://github.com/seunghoonKang) | [@seonghun0828](https://github.com/seonghun0828) | [@devysi0827](https://github.com/devysi0827)|
-|<img src="https://avatars.githubusercontent.com/YeonghunKO" width="100">|<div width="100" alt="애나" />|<img src="https://avatars.githubusercontent.com/Seongtaek-H" width="100">|<img src="https://avatars.githubusercontent.com/Lee-Yeseul" width="100">|<img src="https://avatars.githubusercontent.com/seunghoonKang" width="100">|<img src="https://avatars.githubusercontent.com/seonghun0828" width="100">|<img src="https://avatars.githubusercontent.com/devysi0827" width="100">|
+|[@YeonghunKO](https://github.com/YeonghunKO)|[@anna010ae](https://github.com/anna010ae) | [@Seongtaek-H](https://github.com/Seongtaek-H)  | [@Lee-Yeseul](https://github.com/Lee-Yeseul) | [@seunghoonKang](https://github.com/seunghoonKang) | [@seonghun0828](https://github.com/seonghun0828) | [@devysi0827](https://github.com/devysi0827)|
+|<img src="https://avatars.githubusercontent.com/YeonghunKO" width="100">|<img src="https://avatars.githubusercontent.com/anna010ae" width="100">|<img src="https://avatars.githubusercontent.com/Seongtaek-H" width="100">|<img src="https://avatars.githubusercontent.com/Lee-Yeseul" width="100">|<img src="https://avatars.githubusercontent.com/seunghoonKang" width="100">|<img src="https://avatars.githubusercontent.com/seonghun0828" width="100">|<img src="https://avatars.githubusercontent.com/devysi0827" width="100">|
 <br>

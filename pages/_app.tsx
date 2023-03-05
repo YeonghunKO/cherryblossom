@@ -8,6 +8,8 @@ import { DEFAULT_SEO } from '@/src/constants/defaultSEO';
 import { isEmptyObj } from '@/src/utils';
 import SEO from '@/src/components/common/SEO';
 
+import { Analytics } from '@vercel/analytics/react';
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -19,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <Analytics />
     </>
   );
 }
