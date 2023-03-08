@@ -41,22 +41,22 @@ export default function InterActionCard({
   };
 
   return (
-    <div className="w-full h-full px-5 pt-[44px] pb-[66px]">
-      <div className="w-full h-full bg-[url('/backgrounds/0.svg')] bg-cover bg-center border-4 border-solid border-[#F6F6F6] rounded-[10px] relative flex justify-center shadow-md">
-        <div className="w-[250px] h-[120px] bg-auto bg-white mt-[260px] absolute z-0"></div>
-        <div className="mt-[260px] absolute z-20 flex justify-center">
+    <div className="h-full w-full px-5 pt-[44px] pb-[66px]">
+      <div className="relative flex h-full w-full justify-center rounded-[10px] border-4 border-solid border-[#F6F6F6] bg-[url('/backgrounds/0.svg')] bg-cover bg-center shadow-md">
+        <div className="absolute z-0 mt-[260px] h-[120px] w-[250px] bg-white bg-auto"></div>
+        <div className="absolute z-20 mt-[260px] flex justify-center">
           <Image src="/envelopeLower.svg" alt="evelopeLower" width={254} height={120} />
           {isOpenBtn && (
             <button
               onClick={handleClickOpenBtn}
-              className="w-[114px] h-8 absolute bottom-10 bg-[#FFFFFF] rounded-[55px] border border-solid border-[#EDEDED] cursor-pointer"
+              className="absolute bottom-10 h-8 w-[114px] cursor-pointer rounded-[55px] border border-solid border-[#EDEDED] bg-[#FFFFFF]"
             >
               초대장 열기
             </button>
           )}
         </div>
         <div
-          className={`mt-[180px] absolute z-10 origin-bottom ${
+          className={`absolute z-10 mt-[180px] origin-bottom ${
             !isOpenBtn ? 'animate-[envelope_500ms_linear]' : 'rotate-180'
           }`}
         >
@@ -65,8 +65,8 @@ export default function InterActionCard({
 
         {isPullOut && (
           <div
-            className={`w-[280px] h-[260px] mt-[120px] flex justify-center items-center border border-solid border-[#FDC7D4] bg-white animate-[pull-out_1500ms] ease-in-out z-20 rounded-[10px]
-                }`}
+            className={`} z-20 mt-[120px] flex h-[260px] w-[280px] animate-[pull-out_1500ms] items-center justify-center rounded-[10px] border border-solid border-[#FDC7D4] bg-white
+                ease-in-out`}
           >
             {imageUrl !== undefined && (
               <Image src={imageUrl} alt="image" width="300" height="300" />

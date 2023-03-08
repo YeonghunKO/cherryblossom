@@ -42,8 +42,8 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
   };
 
   return (
-    <div className="w-full h-full">
-      <div className="w-full flex justify-center">
+    <div className="h-full w-full">
+      <div className="flex w-full justify-center">
         <ToastMessage
           popToastMsg={popToastMsg}
           setPopToastMsg={setPopToastMsg}
@@ -55,8 +55,8 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
       </div>
       <div className="px-5 pt-[44px]">
         <section id="card">
-          <div className="relative w-[320px] h-[300px] mt-[66px] flex justify-center items-center border border-solid border-pink-200 bg-white z-20 rounded-[10px] shadow-md">
-            <div className="absolute top-[-20px] bg-[#FEEFF4] w-[240px] h-[40px] flex justify-center items-center rounded-[10px] border-[3px] border-solid border-[#FFC9D4] shadow-blossom-pink drop-shadow-pageTitle">
+          <div className="relative z-20 mt-[66px] flex h-[300px] w-[320px] items-center justify-center rounded-[10px] border border-solid border-pink-200 bg-white shadow-md">
+            <div className="absolute top-[-20px] flex h-[40px] w-[240px] items-center justify-center rounded-[10px] border-[3px] border-solid border-[#FFC9D4] bg-[#FEEFF4] shadow-blossom-pink drop-shadow-pageTitle">
               벚꽃 초대장
             </div>
             {imageUrl !== undefined && (
@@ -66,27 +66,27 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
         </section>
 
         {type === 'complete' ? (
-          <section id="middleBtn" className="w-full flex justify-between mt-4">
+          <section id="middleBtn" className="mt-4 flex w-full justify-between">
             <button
               onClick={handleClickShareBtn}
               className={`${
                 !checkClickedBtn.copy ? 'bg-btn-yellow' : 'bg-[#AFE6AD]'
-              } h-[50px] grow-0 w-full rounded-[10px] border border-solid border-white cursor-pointer`}
+              } h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white`}
             >
               <p>편지 보내기</p>
             </button>
             <button
               onClick={handleClickRewriteBtn}
-              className={`bg-btn-yellow ml-[15px] w-full grow-0 h-[50px] rounded-[10px] border border-solid border-white cursor-pointer`}
+              className={`ml-[15px] h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white bg-btn-yellow`}
             >
               <p>다시 작성하기</p>
             </button>
           </section>
         ) : (
-          <section id="middleBtn" className="w-full flex justify-between mt-4">
+          <section id="middleBtn" className="mt-4 flex w-full justify-between">
             <button
               onClick={handleClickRewriteBtn}
-              className="bg-btn-yellow w-full grow-0 h-[50px] rounded-[10px] border border-solid border-white cursor-pointer"
+              className="h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white bg-btn-yellow"
             >
               <p>나도 초대장 만들어보기</p>
             </button>
@@ -98,7 +98,7 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
         onClick={handleClickSaveImgBtn}
         className={`${
           checkClickedBtn.save ? 'bg-[#E6ADAD]' : 'bg-[#AFE6AD]'
-        } absolute bottom-0 w-full h-[48px] flex justify-center cursor-pointer`}
+        } absolute bottom-0 flex h-[48px] w-full cursor-pointer justify-center`}
       >
         <button disabled={checkClickedBtn.save}>내 앨범에 담기</button>
       </section>

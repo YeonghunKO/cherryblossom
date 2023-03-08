@@ -17,7 +17,7 @@ const Creation = () => {
   const [selectedBackground, setSelectedBackground] = useState<number | null>(null);
   const [selectedCharacter, setSelectedCharacter] = useState<number | null>(null);
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
-  const [isTextEmpty, setIsTextEmpty] = useState(true);
+  const [textValue, setTextValue] = useState('');
   const handleClickCreation = async () => {
     removeCancelBtnFromDisplay();  // 캐릭터/스티커 위의 X 버튼 삭제
 
@@ -42,8 +42,8 @@ const Creation = () => {
         selectedBackground={selectedBackground}
         selectedCharacter={selectedCharacter}
         selectedSticker={selectedSticker}
-        isTextEmpty={isTextEmpty}
-        setIsTextEmpty={(flag: boolean) => setIsTextEmpty(flag)}
+        textValue={textValue}
+        setTextValue={(input: string) => setTextValue(input)}
       />
       <Custom
         selectedBackground={selectedBackground}
@@ -56,10 +56,10 @@ const Creation = () => {
         setSelectedItem={(item: CustomTypes) => setSelectedItem(item)}
       />
       <button
-        disabled={isTextEmpty}
+        disabled={!textValue.length}
         onClick={handleClickCreation}
         className={`w-[360px] font-pretendard font-bold h-12 ${
-          isTextEmpty ? 'bg-blossom-gray text-gray-400' : ' bg-blossom-green'
+          !textValue.length ? 'bg-blossom-gray text-gray-400' : ' bg-blossom-green'
         } bg-blossom-gray fixe left-0 right-0`}
       >
         초대장 완성하기

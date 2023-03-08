@@ -112,7 +112,7 @@ const STICKER_IMAGE = [
     id: 6,
     preview: 'pre_6.svg',
     value: '6.svg',
-  }
+  },
 ];
 
 const CHARACTER_IMAGE = [
@@ -163,56 +163,61 @@ export default function Custom(props: CustomProps) {
   const handleItemClick = (id: number) => {
     if (selectedItem === 'background') {
       setSelectedBackground(id);
-      setSelectedCharacter(null);
-      setSelectedSticker(null);
     }
     if (selectedItem === 'character') {
-      if (selectedCharacter === id) {  // 이미 클릭된 아이템 클릭 시 selectedCharacter null로 변경
+      if (selectedCharacter === id) {
+        // 이미 클릭된 아이템 클릭 시 selectedCharacter null로 변경
         setSelectedCharacter(null);
         return;
       }
       setSelectedCharacter(id);
-      setSelectedSticker(null);
     }
     if (selectedItem === 'sticker') {
-      if (selectedSticker === id) {  // 이미 클릭된 아이템 클릭 시 selectedSticker null로 변경
+      if (selectedSticker === id) {
+        // 이미 클릭된 아이템 클릭 시 selectedSticker null로 변경
         setSelectedSticker(null);
         return;
       }
       setSelectedSticker(id);
-      setSelectedCharacter(null);
     }
   };
 
+  const handlerCustomTypeClick = (customType: CustomTypes) => {
+    setSelectedItem(customType);
+    setSelectedBackground(null);
+    setSelectedCharacter(null);
+    setSelectedSticker(null);
+  }
+
   return (
-    <div className="w-[360px] h-96 bg-blossom-lightBlue flex-col space-y-[8px] mt-[8px] px-[20px]">
+    <div className="mt-[8px] h-96 w-[360px] flex-col space-y-[8px] bg-blossom-lightBlue px-[20px]">
       <div className="grid grid-cols-3 gap-4">
         {CUSTOM_ITEMS.map(custom => {
           return (
             <button
               key={custom.value}
-              className={`w-[96px] h-[36px] text-sm rounded-[10px] border-blossom-white border-2 
+              className={`h-[36px] w-[96px] rounded-[10px] border-2 border-blossom-white text-sm 
   ${selectedItem === custom.value ? 'bg-blossom-green' : 'bg-blossom-yellow'}`}
-              onClick={() => setSelectedItem(custom.value)}
+              onClick={() => handlerCustomTypeClick(custom.value)}
             >
               {custom.name}
             </button>
           );
         })}
       </div>
-      <div className="border-t border-solid border-1 border-blossom-darkGray my-[8px]"></div>
+      <div className="border-1 my-[8px] border-t border-solid border-blossom-darkGray"></div>
 
-      <div className="h-[230px] grid grid-cols-3 gap-4 overflow-auto">
+      <div className="grid h-[230px] grid-cols-3 gap-4 overflow-auto">
         {selectedItem === 'background' &&
           BACKGROUND_IMAGE.map(img => {
             return (
               <div
                 key={img.id}
-                className={`w-[96px] h-[112px] ${
+                className={`h-[112px] w-[96px] ${
                   selectedBackground === img.id ? ' bg-blossom-green' : 'bg-blossom-white'
-                }   border-solid border-[2px]  ${
+                }   border-[2px] border-solid  ${
                   selectedBackground === img.id ? ' border-blossom-green' : 'border-blossom-white'
-                }  rounded-[14px] overflow-hidden`}
+                }  overflow-hidden rounded-[14px]`}
                 onClick={() => handleItemClick(img.id)}
               >
                 <Image
@@ -230,9 +235,9 @@ export default function Custom(props: CustomProps) {
             return (
               <div
                 key={img.id}
-                className={`w-[96px] h-[56px] bg-blossom-white border-solid border-2 ${
+                className={`h-[56px] w-[96px] border-2 border-solid bg-blossom-white ${
                   selectedCharacter === img.id ? ' border-blossom-green' : 'border-blossom-white'
-                }   rounded-[14px] overflow-hidden`}
+                }   overflow-hidden rounded-[14px]`}
                 onClick={() => handleItemClick(img.id)}
               >
                 <Image src={`/characters/${img.preview}`} alt={img.value} width={96} height={56} />
@@ -244,9 +249,9 @@ export default function Custom(props: CustomProps) {
             return (
               <div
                 key={img.id}
-                className={`w-[96px] h-[56px] bg-blossom-white border-solid border-2 ${
+                className={`h-[56px] w-[96px] border-2 border-solid bg-blossom-white ${
                   selectedSticker === img.id ? ' border-blossom-green' : 'border-blossom-white'
-                }   rounded-[14px] overflow-hidden`}
+                }   overflow-hidden rounded-[14px]`}
                 onClick={() => handleItemClick(img.id)}
               >
                 <Image src={`/stickers/${img.preview}`} alt={img.value} width={96} height={56} />
