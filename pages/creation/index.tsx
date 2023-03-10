@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import Custom from '@/src/components/Creation/Custom';
-import Display, { removeCancelBtnFromDisplay } from '@/src/components/Creation/Display';
+import Display from '@/src/components/Creation/Display';
 import PageTitle from '@/src/components/Creation/PageTitle';
 import { saveImg } from '@/src/utils';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 import Head from 'next/head';
+import { flushSync } from 'react-dom';
 
 /**
  * 초대장 생성 페이지
@@ -18,10 +19,14 @@ const Creation = () => {
   const [selectedCharacter, setSelectedCharacter] = useState<number | null>(null);
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
   const [textValue, setTextValue] = useState('');
+  const [visibleCancelBtn, setVisibleCancelBtn] = useState('visible');
   const handleClickCreation = async () => {
-    removeCancelBtnFromDisplay();  // 캐릭터/스티커 위의 X 버튼 삭제
+    flushSync(() => {
+      setVisibleCancelBtn('hidden');  // X 버튼 hidden
+    });
 
     const filename = uuidv4();
+    
     await saveImg('display', filename);
     const move = () =>
       router.push({
@@ -44,6 +49,7 @@ const Creation = () => {
         selectedSticker={selectedSticker}
         textValue={textValue}
         setTextValue={(input: string) => setTextValue(input)}
+        visibleCancelBtn={visibleCancelBtn}
       />
       <Custom
         selectedBackground={selectedBackground}

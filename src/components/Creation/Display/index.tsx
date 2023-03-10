@@ -1,5 +1,6 @@
 // @ts-nocheck
-import { ChangeEvent, MouseEvent, MutableRefObject, useCallback, useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { ChangeEvent, MouseEvent, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 
 type CustomTypes = 'background' | 'character' | 'sticker';
 type ItemObjectType = {
@@ -15,22 +16,14 @@ type DisplayProps = {
   selectedSticker: number | null;
   textValue: string;
   setTextValue: (input: string) => void;
+  visibleCancelBtn: string;
 };
 
 const customTypeArr = ['character', 'sticker'];
 
-export const removeCancelBtnFromDisplay = () => {
-  const display = document.querySelector('#display');
-  display?.childNodes.forEach(child => {
-    if (child.childNodes.length === 1) return;
-
-    child.childNodes[0]?.remove();
-  });
-};
-
 /**
  * 초대장 생성 페이지의 Display 부분이다.
- * 캐릭터나 스티커를 클릭한 상태로 컴포넌트 안의 영역을 클릭하면 동적으로 해당 아이템이 생성된다.
+ * 컴포넌트 안의 영역을 클릭하면 캐릭터/스티커를 배열 state에 저장해 해당 아이템을 렌더링한다.
  */
 export default function Display(props: DisplayProps) {
   const {
@@ -40,24 +33,25 @@ export default function Display(props: DisplayProps) {
     selectedSticker,
     textValue,
     setTextValue,
+    visibleCancelBtn
   } = props;
 
+  const [characters, setCharacters] = useState<ItemObjectType[]>([]);
+  const [stickers, setStickers] = useState<ItemObjectType[]>([]);
   const displayRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const textareaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
 
-  const handlerDeleteItem = (e: MouseEvent) => {
+  const handlerDeleteItem = (e: MouseEvent, targetId: number, selected: CustomTypes) => {
     e.stopPropagation(); // click event가 버블링 되어 handlerClickDisplay가 호출되는 것을 방지
 
-    customTypeArr.forEach(customType => {
-      // 캐릭터/스티커 session 순회하며 id에 해당하는 요소 삭제
-      const items: ItemObjectType[] = JSON.parse(sessionStorage.getItem(customType));
-      if (!items) return;
+    const filteredArr = selected === 'character' ?
+      characters.filter(item => item.id !== targetId) :
+      stickers.filter(item => item.id !== targetId);
 
-      const modifiedItems = items.filter(({ id }) => `item${id}` !== e.target.parentNode.id);
-      sessionStorage.setItem(customType, JSON.stringify(modifiedItems));
-    });
+    selected === 'character' ?
+      setCharacters(filteredArr) : setStickers(filteredArr);
 
-    e.target.parentNode.remove(); // DOM 트리에서 노드 삭제
+    sessionStorage.setItem(selected, JSON.stringify(filteredArr))
   };
 
   const handlerClickDisplay = (e: MouseEvent) => {
@@ -86,46 +80,20 @@ export default function Display(props: DisplayProps) {
       path: selectedItemPath,
       id,
     };
+    
+    selectedItem === 'character' ?
+      setCharacters(prev => [...prev, itemObject]) :
+      setStickers(prev => [...prev, itemObject]);
 
-    const selectedItems = sessionStorage.getItem(selectedItem);
-    if (selectedItems) {
-      const items = JSON.parse(selectedItems);
-      sessionStorage.setItem(selectedItem, JSON.stringify([...items, itemObject]));
-    } else {
-      sessionStorage.setItem(selectedItem, JSON.stringify([itemObject]));
-    }
-
-    paintItemInDisplay(offsetX, offsetY, selectedItemPath, id);
+    sessionStorage.setItem(selectedItem, JSON.stringify(
+      selectedItem === 'character' ?
+      [...characters, itemObject] : [...stickers, itemObject]
+    ))
   };
 
   const handlerChangeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextValue(e.target.value);
   };
-
-  const paintItemInDisplay = useCallback((x: number, y: number, path: string, id: number) => {
-    const item = document.createElement('div');
-    const cancelBtn = document.createElement('span');
-    const img = document.createElement('img');
-
-    cancelBtn.innerText = 'X';
-    cancelBtn.addEventListener('click', e => handlerDeleteItem(e));
-
-    item.id = `item${id}`;
-    item.setAttribute('style', 'position:absolute;');
-    item.classList.add('flex');
-    item.classList.add('flex-col');
-    item.classList.add('items-end');
-    item.style.left = x + 'px';
-    item.style.top = y + 'px';
-    item.style.transform = 'translate(-50%,-50%)';
-
-    img.setAttribute('width', '30px');
-    img.setAttribute('src', path);
-
-    item.appendChild(cancelBtn);
-    item.appendChild(img);
-    displayRef.current?.appendChild(item);
-  }, []);
 
   const paintBackground = useCallback(() => {
     const sessionBackground = sessionStorage.getItem('background');
@@ -140,6 +108,16 @@ export default function Display(props: DisplayProps) {
     }
     displayRef.current.style = `background-image:url(/backgrounds/${backgroundNumber}.svg); background-size:cover`; // background 이미지 그리기
   }, [selectedBackground]);
+
+  const clearAllItems = (e: MouseEvent) => {
+    e.stopPropagation();  // 이벤트 버블링 방지
+    if(!window.confirm('모든 캐릭터 / 스티커를 삭제하시겠습니까?'))
+      return;
+
+    setCharacters([]);
+    setStickers([]);
+    customTypeArr.forEach((customType) => sessionStorage.removeItem(customType));
+  }
 
   useEffect(() => {
     // textarea readOnly 설정
@@ -158,38 +136,101 @@ export default function Display(props: DisplayProps) {
   }, [paintBackground]);
 
   useEffect(() => {
-    // 초기 렌더링 시 session 저장된 캐릭터/스티커 렌더링
-    if (displayRef.current?.children.length === 1) {
-      // children이 1이면 textarea만 존재 === 초기 렌더링일 때
-      customTypeArr.forEach(customType => {
-        // session에 저장되어 있는 customType 배열들을 순회
+    if (!characters.length && !stickers.length) { // 초기 렌더링 시
+      customTypeArr.forEach(customType => { // session에 저장된 캐릭터/스티커 가져와서 state 변경
         if (sessionStorage.getItem(customType)) {
           const items: ItemObjectType[] = JSON.parse(sessionStorage.getItem(customType));
-
-          items.forEach(({ offsetX, offsetY, path, id }) => {
-            // items 순회하며 저장된 좌표, path에 맞게 paint 호출
-            paintItemInDisplay(offsetX, offsetY, path, id);
-          });
+          customType === 'character' ?
+            setCharacters(items) :
+            setStickers(items);
         }
       });
     }
-  }, [paintItemInDisplay]);
+  }, []);
 
   return (
     <div className="flex w-full flex-col items-center">
       <div
         id="display"
         ref={displayRef}
-        className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-fuchsia-300"
+        className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-[#FDC7D4] bg-[#FDC7D4]"
         onClick={e => handlerClickDisplay(e)}
       >
         <textarea
           ref={textareaRef}
-          className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] p-1 focus:outline-none"
+          className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] p-2.5 focus:outline-none bg-brownBorder "
           onChange={e => handlerChangeTextarea(e)}
           placeholder="초대장 문구를 작성해주세요"
           value={textValue}
         ></textarea>
+        {
+          characters.map(({offsetX, offsetY, path, id}) => (
+            <div
+              data-item-id={id}
+              className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
+              style={{left:`${offsetX}px`, top:`${offsetY}px`, transform:'translate(-50%,-50%)'}}
+              key={id}
+            >
+              <div
+                className='cursor-pointer'
+                onClick={(e) => handlerDeleteItem(e, id, 'character')}
+                style={{visibility: `${visibleCancelBtn}`, transform: 'translateY(100%)'}}
+              >
+                <img
+                  src='/creation/cancel.svg'
+                  alt='cancelButton'
+                  width={12}
+                  height={12}
+                />
+              </div>
+              <img
+                src={path}
+                alt={'character'}
+                width={30}
+                height={30}
+              />
+            </div>
+          ))
+        }
+        {
+          stickers.map(({offsetX, offsetY, path, id}) => (
+            <div
+              data-item-id={id}
+              className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
+              style={{left:`${offsetX}px`, top:`${offsetY}px`, transform:'translate(-50%,-50%)'}}
+              key={id}
+            >
+              <div
+                className='cursor-pointer'
+                onClick={(e) => handlerDeleteItem(e, id, 'sticker')}
+                style={{visibility: `${visibleCancelBtn}`}}  
+              >
+                <img
+                  src='/creation/cancel.svg'
+                  alt='cancelButton'
+                  width={12}
+                  height={12}
+                />
+              </div>
+              <img
+                src={path}
+                alt={'sticker'}
+                width={30}
+                height={30}
+              />
+            </div>
+          ))
+        }
+        <div onClick={e => clearAllItems(e)}>
+            <img
+              className='absolute cursor-pointer'
+              src={'/creation/eraser.svg'}
+              alt={'eraserButton'}
+              width={24}
+              height={24}
+              style={{right: '10px', bottom: '10px', visibility: `${visibleCancelBtn}`}}
+            />
+        </div>
       </div>
     </div>
   );

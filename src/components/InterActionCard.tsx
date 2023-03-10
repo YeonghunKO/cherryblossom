@@ -43,7 +43,7 @@ export default function InterActionCard({
   return (
     <div className="h-full w-full px-5 pt-[44px] pb-[66px]">
       <div className="relative flex h-full w-full justify-center rounded-[10px] border-4 border-solid border-[#F6F6F6] bg-[url('/backgrounds/0.svg')] bg-cover bg-center shadow-md">
-        <div className="absolute z-0 mt-[260px] h-[120px] w-[250px] bg-white bg-auto"></div>
+        <div className="absolute z-0 mt-[260px] h-[110px] w-[250px] bg-white bg-auto"></div>
         <div className="absolute z-20 mt-[260px] flex justify-center">
           <Image src="/envelopeLower.svg" alt="evelopeLower" width={254} height={120} />
           {isOpenBtn && (
@@ -65,12 +65,12 @@ export default function InterActionCard({
 
         {isPullOut && (
           <div
-            className={`} z-20 mt-[120px] flex h-[260px] w-[280px] animate-[pull-out_1500ms] items-center justify-center rounded-[10px] border border-solid border-[#FDC7D4] bg-white
-                ease-in-out`}
+            className="z-20 mt-[120px] flex h-[260px] w-[280px] animate-[pull-out_1500ms] items-center justify-center overflow-hidden rounded-[10px] border border-solid border-[#FDC7D4]
+                bg-white ease-in-out"
           >
-            {imageUrl !== undefined && (
-              <Image src={imageUrl} alt="image" width="300" height="300" />
-            )}
+            <div className="relative h-full w-full">
+              {imageUrl !== undefined && <Image src={imageUrl} alt="image" fill />}
+            </div>
           </div>
         )}
       </div>

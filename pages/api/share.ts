@@ -6,9 +6,15 @@ export const copyLink = async (
   setCheckClickedBtn: Dispatch<SetStateAction<{ copy: boolean; save: boolean }>>
 ) => {
   try {
-    await navigator.clipboard.writeText(
-      `https://cherryblossom-ten.vercel.app/received/${imageName}`
-    );
+    const textarea: HTMLTextAreaElement = document.createElement('textarea');
+    textarea.value = `https://cherryblossom-ten.vercel.app/received/${imageName}`;
+    textarea.style.position = 'fixed';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
     setPopToastMsg(true);
     setCheckClickedBtn(prev => {
       return { ...prev, copy: true };

@@ -54,14 +54,14 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
         />
       </div>
       <div className="px-5 pt-[44px]">
-        <section id="card">
-          <div className="relative z-20 mt-[66px] flex h-[300px] w-[320px] items-center justify-center rounded-[10px] border border-solid border-pink-200 bg-white shadow-md">
-            <div className="absolute top-[-20px] flex h-[40px] w-[240px] items-center justify-center rounded-[10px] border-[3px] border-solid border-[#FFC9D4] bg-[#FEEFF4] shadow-blossom-pink drop-shadow-pageTitle">
-              벚꽃 초대장
+        <section id="card" className="relative flex justify-center">
+          <div className="absolute top-[44px] z-30 flex h-[40px] w-[240px] items-center justify-center rounded-[10px] border-[3px] border-solid border-[#FFC9D4] bg-[#FEEFF4] shadow-blossom-pink drop-shadow-pageTitle">
+            벚꽃 초대장
+          </div>
+          <div className="relative z-20 mt-[66px] flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-[8px] bg-white shadow-md">
+            <div className="relative h-full w-full">
+              {imageUrl !== undefined && <Image src={imageUrl} alt="image" fill />}
             </div>
-            {imageUrl !== undefined && (
-              <Image src={imageUrl} alt="image" width="300" height="300" />
-            )}
           </div>
         </section>
 
