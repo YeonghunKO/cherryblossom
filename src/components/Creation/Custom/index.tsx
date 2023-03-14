@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { ItemObjectType } from '../Display';
 
 type CustomTypes = 'background' | 'character' | 'sticker';
 
@@ -11,6 +12,8 @@ type CustomProps = {
   setSelectedSticker: (item: number | null) => void;
   selectedItem: CustomTypes;
   setSelectedItem: (item: CustomTypes) => void;
+  setItem: (item: ItemObjectType) => void;
+  handleMouseMove: (e: MouseEvent | TouchEvent) => void;
 };
 
 type CustomItem = {
@@ -111,7 +114,22 @@ const STICKER_IMAGE = [
   {
     id: 6,
     preview: 'pre_6.svg',
-    value: '6.svg',
+    value: '6.png',
+  },
+  {
+    id: 7,
+    preview: 'pre_7.svg',
+    value: '7.png',
+  },
+  {
+    id: 8,
+    preview: 'pre_8.svg',
+    value: '8.png',
+  },
+  {
+    id: 9,
+    preview: 'pre_9.svg',
+    value: '9.png',
   },
 ];
 
@@ -146,6 +164,26 @@ const CHARACTER_IMAGE = [
     preview: 'pre_5.svg',
     value: '5.png',
   },
+  {
+    id: 6,
+    preview: 'pre_6.svg',
+    value: '6.png',
+  },
+  {
+    id: 7,
+    preview: 'pre_7.svg',
+    value: '7.png',
+  },
+  {
+    id: 8,
+    preview: 'pre_8.svg',
+    value: '8.png',
+  },
+  {
+    id: 9,
+    preview: 'pre_9.svg',
+    value: '9.png',
+  },
 ];
 
 export default function Custom(props: CustomProps) {
@@ -158,6 +196,8 @@ export default function Custom(props: CustomProps) {
     setSelectedSticker,
     selectedItem,
     setSelectedItem,
+    setItem,
+    handleMouseMove,
   } = props;
 
   const handleItemClick = (id: number) => {
@@ -187,16 +227,45 @@ export default function Custom(props: CustomProps) {
     setSelectedBackground(null);
     setSelectedCharacter(null);
     setSelectedSticker(null);
-  }
+  };
+
+  const handleMouseDown = (e: MouseEvent | TouchEvent, src: string) => {
+    document.querySelector('#creation-page')?.classList.add('overflow-hidden');
+    document.querySelector('#creation-page')?.classList.add('cursor-pointer');
+
+    const pageRect = document.querySelector('#creation-page')?.getBoundingClientRect();
+    const pageLeft = pageRect?.left; // 전체 브라우저 화면에서 현재 page 컴포넌트 기준으로 좌표 계산
+    const pageTop = pageRect?.top;
+
+    document.addEventListener('mousemove', ev => handleMouseMove(ev));
+
+    if (e.nativeEvent?.touches) {
+      // 모바일 터치 환경
+      setItem({
+        offsetX: e.nativeEvent.touches?.[0].clientX,
+        offsetY: e.nativeEvent.touches?.[0].clientY,
+        path: selectedItem + 's/' + src,
+        id: -1,
+      });
+    } else {
+      // 브라우저 클릭 환경
+      setItem({
+        offsetX: e.clientX - pageLeft,
+        offsetY: e.clientY - pageTop,
+        path: selectedItem + 's/' + src,
+        id: -1,
+      });
+    }
+  };
 
   return (
-    <div className="mt-[8px] h-96 w-[360px] flex-col space-y-[8px] bg-blossom-lightBlue px-[20px]">
+    <div className="mt-[8px] flex w-full flex-col items-center justify-center space-y-[8px]  bg-blossom-lightBlue px-[20px]">
       <div className="grid grid-cols-3 gap-4">
         {CUSTOM_ITEMS.map(custom => {
           return (
             <button
               key={custom.value}
-              className={`h-[36px] w-[96px] rounded-[10px] border-2 border-blossom-white text-sm 
+              className={`h-[36px] w-[96px] rounded-[10px] border-2 border-blossom-white text-lg 
   ${selectedItem === custom.value ? 'bg-blossom-green' : 'bg-blossom-yellow'}`}
               onClick={() => handlerCustomTypeClick(custom.value)}
             >
@@ -205,15 +274,15 @@ export default function Custom(props: CustomProps) {
           );
         })}
       </div>
-      <div className="border-1 my-[8px] border-t border-solid border-blossom-darkGray"></div>
+      <div className="border-1 my-[8px] w-[96%] border-t border-solid border-blossom-darkGray"></div>
 
-      <div className="grid grid-cols-3 gap-4 overflow-auto">
+      <div className="scrollbar-hide grid max-h-[48vh] grid-cols-3 gap-4 overflow-auto pb-12">
         {selectedItem === 'background' &&
           BACKGROUND_IMAGE.map(img => {
             return (
               <div
                 key={img.id}
-                className={`h-[112px] w-[96px] ${
+                className={`h-[112px] w-[96px] cursor-pointer ${
                   selectedBackground === img.id ? ' bg-blossom-green' : 'bg-blossom-white'
                 }   border-[2px] border-solid  ${
                   selectedBackground === img.id ? ' border-blossom-green' : 'border-blossom-white'
@@ -235,10 +304,12 @@ export default function Custom(props: CustomProps) {
             return (
               <div
                 key={img.id}
-                className={`h-[56px] w-[96px] border-2 border-solid bg-blossom-white ${
+                className={`h-[56px] w-[96px] cursor-pointer border-2 border-solid bg-blossom-white ${
                   selectedCharacter === img.id ? ' border-blossom-green' : 'border-blossom-white'
                 }   overflow-hidden rounded-[14px]`}
-                onClick={() => handleItemClick(img.id)}
+                onMouseDown={e => handleMouseDown(e, img.value)}
+                onTouchStart={e => handleMouseDown(e, img.value)}
+                onTouchMove={e => handleMouseMove(e)}
               >
                 <Image src={`/characters/${img.preview}`} alt={img.value} width={96} height={56} />
               </div>
@@ -249,10 +320,12 @@ export default function Custom(props: CustomProps) {
             return (
               <div
                 key={img.id}
-                className={`h-[56px] w-[96px] border-2 border-solid bg-blossom-white ${
+                className={`h-[56px] w-[96px] cursor-pointer border-2 border-solid bg-blossom-white ${
                   selectedSticker === img.id ? ' border-blossom-green' : 'border-blossom-white'
                 }   overflow-hidden rounded-[14px]`}
-                onClick={() => handleItemClick(img.id)}
+                onMouseDown={e => handleMouseDown(e, img.value)}
+                onTouchStart={e => handleMouseDown(e, img.value)}
+                onTouchMove={e => handleMouseMove(e)}
               >
                 <Image src={`/stickers/${img.preview}`} alt={img.value} width={96} height={56} />
               </div>

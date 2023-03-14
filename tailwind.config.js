@@ -15,7 +15,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         totalBg: "url('../public/backgrounds/totalBg.svg')",
-        brownBorder: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%238C620CFF' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`
+        brownBorder: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%238C620CFF' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
       },
       dropShadow: {
         pageTitle: '0 4px 0px #FFC9D4',
@@ -68,6 +68,7 @@ module.exports = {
         sans: ['var(--font-jamjaFlower)', ...fontFamily.sans],
         title: ['var(--font-jejudoldam)'],
         pretendard: ['var(--font-pretendard)'],
+        inter: ['var(--font-inter)'],
       },
     },
     plugins: [],

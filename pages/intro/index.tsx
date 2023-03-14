@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Logo from '@/public/introLogo.svg';
-import Bg from '@/public/introBg.svg';
-import SmallFlower from '@/public/intro_flower_sm.svg';
-import MiddleFlower from '@/public/intro_flower_md.svg';
-import BigFlower from '@/public/intro_flower_lg.svg';
+import Logo from '@/public/intro/introLogo.svg';
+import Bg from '@/public/intro/introBg.svg';
+import SmallFlower from '@/public/intro/intro_flower_sm.svg';
+import MiddleFlower from '@/public/intro/intro_flower_md.svg';
+import BigFlower from '@/public/intro/intro_flower_lg.svg';
 import Head from 'next/head';
 
 function Intro() {
@@ -19,22 +19,22 @@ function Intro() {
         <title>나랑 같이 벚꽃 보러가지 않을래?🎵🎶</title>
       </Head>
       <div className="w-[89%] flex flex-col justify-center items-center">
-        <div className="relative min-w-[320px] min-h-[420px] w-[100%] flex justify-center items-center">
-          <Image src={Bg} alt="testBg" className="rounded-xl w-[100%]" />
+        <div className="relative w-[100%] flex justify-center items-center">
+          <Image src={Bg} alt="Bg" className="rounded-xl w-[100%]" />
           <Image
             src={Logo}
-            alt="testLogo"
+            alt="Logo"
             className="absolute z-20 left-1/2 top-1/2 translate-y-[-50%] translate-x-[-50%] animate-fade-in w-[71%]"
           />
         </div>
         <button
           style={{ borderBottomWidth: '6px', borderRightWidth: '2px', borderLeftWidth: '2px' }}
-          className="fixed bottom-0 w-[26.5%] min-w-[310px] h-12 bg-blossom-green border-[3px] border-blossom-white border-solid rounded-xl mt-4 z-20 box-content text-2xl text-blossom-black"
+          className="box-border w-[98%] h-12 bg-blossom-green border-[3px] border-blossom-white border-solid rounded-xl mt-4 z-20 box-content text-2xl text-blossom-black"
           onClick={movePage}
         >
           초대장 만들러 가기
         </button>
-        <div className="absolute overflow-hidden w-min-[360px] w-full h-full">
+        <div className="absolute overflow-hidden w-full h-full">
           {/* first */}
           <Image
             src={BigFlower}

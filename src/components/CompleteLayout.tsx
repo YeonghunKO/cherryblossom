@@ -1,9 +1,8 @@
+import React, { useEffect, useState } from 'react';
 import { copyLink } from '@/pages/api/share';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import Image from 'next/image';
 import ToastMessage from '@/src/components/ToastMessage';
-import { saveImgToUser } from '../utils';
 
 type propsType = {
   type: 'complete' | 'receive';
@@ -30,14 +29,23 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
     }
   };
 
-  const handleClickSaveImgBtn = () => {
-    setToastType('save');
-    if (imageUrl !== undefined) {
-      saveImgToUser(imageUrl, imageName);
-      setPopToastMsg(true);
+  useEffect(() => {
+    try {
+      if (!window.Kakao.isInitialized(process.env.NEXT_PUBLIC_KAKAO_KEY)) {
+        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY);
+      }
+    } catch (e) {
+      console.error(e);
     }
-    setCheckClickedBtn(prev => {
-      return { ...prev, save: true };
+  }, []);
+
+  const shareKakao = () => {
+    window.Kakao.Share.createCustomButton({
+      container: '#kakaotalk-sharing-btn',
+      templateId: 91057,
+      templateArgs: {
+        imageName: `${imageName}`,
+      },
     });
   };
 
@@ -95,12 +103,11 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
       </div>
       <section
         id="footerBtn"
-        onClick={handleClickSaveImgBtn}
-        className={`${
-          checkClickedBtn.save ? 'bg-[#E6ADAD]' : 'bg-[#AFE6AD]'
-        } absolute bottom-0 flex h-[48px] w-full cursor-pointer justify-center`}
+        className={`absolute bottom-0 flex h-[48px] w-full cursor-pointer justify-center bg-[#FDE300] font-inter text-lg font-semibold leading-5 text-[#131210]`}
       >
-        <button disabled={checkClickedBtn.save}>내 앨범에 담기</button>
+        <button onClick={shareKakao} id="kakaotalk-sharing-btn">
+          카카오톡 공유하기
+        </button>
       </section>
     </div>
   );

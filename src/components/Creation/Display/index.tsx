@@ -1,22 +1,33 @@
 // @ts-nocheck
 import Image from 'next/image';
-import { ChangeEvent, MouseEvent, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  MouseEvent,
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 type CustomTypes = 'background' | 'character' | 'sticker';
-type ItemObjectType = {
+export type ItemObjectType = {
   offsetX: number;
   offsetY: number;
   path: string;
   id: number;
 };
 type DisplayProps = {
-  selectedItem: CustomTypes;
   selectedBackground: number | null;
   selectedCharacter: number | null;
   selectedSticker: number | null;
   textValue: string;
   setTextValue: (input: string) => void;
   visibleCancelBtn: string;
+  characters: ItemObjectType[];
+  stickers: ItemObjectType[];
+  setCharacters: (characters: ItemObjectType[]) => void;
+  setStickers: (stickers: ItemObjectType[]) => void;
 };
 
 const customTypeArr = ['character', 'sticker'];
@@ -27,72 +38,36 @@ const customTypeArr = ['character', 'sticker'];
  */
 export default function Display(props: DisplayProps) {
   const {
-    selectedItem,
     selectedBackground,
     selectedCharacter,
     selectedSticker,
     textValue,
     setTextValue,
-    visibleCancelBtn
+    visibleCancelBtn,
+    characters,
+    stickers,
+    setCharacters,
+    setStickers,
   } = props;
 
-  const [characters, setCharacters] = useState<ItemObjectType[]>([]);
-  const [stickers, setStickers] = useState<ItemObjectType[]>([]);
   const displayRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const textareaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
 
   const handlerDeleteItem = (e: MouseEvent, targetId: number, selected: CustomTypes) => {
     e.stopPropagation(); // click event가 버블링 되어 handlerClickDisplay가 호출되는 것을 방지
 
-    const filteredArr = selected === 'character' ?
-      characters.filter(item => item.id !== targetId) :
-      stickers.filter(item => item.id !== targetId);
+    const filteredArr =
+      selected === 'character'
+        ? characters.filter(item => item.id !== targetId)
+        : stickers.filter(item => item.id !== targetId);
 
-    selected === 'character' ?
-      setCharacters(filteredArr) : setStickers(filteredArr);
+    selected === 'character' ? setCharacters(filteredArr) : setStickers(filteredArr);
 
-    sessionStorage.setItem(selected, JSON.stringify(filteredArr))
-  };
-
-  const handlerClickDisplay = (e: MouseEvent) => {
-    if (selectedCharacter === null && selectedSticker === null) {
-      // 캐릭터나 스티커 둘 중 어느 것도 선택하지 않았으면 함수 종료
-      return;
-    }
-    const displayRect = displayRef.current?.getBoundingClientRect();
-
-    const displayLeft = displayRect?.left; // display의 시작 left, top 좌표 값은 기기마다 달라짐
-    const displayTop = displayRect?.top;
-    const offsetX = e.clientX - displayLeft; // offset은 display 내에서의 클릭 좌표 값이기 때문에 항상 같음
-    const offsetY = e.clientY - displayTop;
-
-    const selectedItemPath = `/${selectedItem}s/${
-      selectedCharacter === null ? selectedSticker : selectedCharacter
-    }.png`;
-
-    let id = sessionStorage.getItem('itemId') ? parseInt(sessionStorage.getItem('itemId')) + 1 : 0;
-    sessionStorage.setItem('itemId', id);
-
-    const itemObject: ItemObjectType = {
-      // session에 저장할 객체
-      offsetX,
-      offsetY,
-      path: selectedItemPath,
-      id,
-    };
-    
-    selectedItem === 'character' ?
-      setCharacters(prev => [...prev, itemObject]) :
-      setStickers(prev => [...prev, itemObject]);
-
-    sessionStorage.setItem(selectedItem, JSON.stringify(
-      selectedItem === 'character' ?
-      [...characters, itemObject] : [...stickers, itemObject]
-    ))
+    sessionStorage.setItem(selected, JSON.stringify(filteredArr));
   };
 
   const handlerChangeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setTextValue(e.target.value);
+    setTextValue(textareaRef.current?.textContent);
   };
 
   const paintBackground = useCallback(() => {
@@ -110,14 +85,13 @@ export default function Display(props: DisplayProps) {
   }, [selectedBackground]);
 
   const clearAllItems = (e: MouseEvent) => {
-    e.stopPropagation();  // 이벤트 버블링 방지
-    if(!window.confirm('모든 캐릭터 / 스티커를 삭제하시겠습니까?'))
-      return;
+    e.stopPropagation(); // 이벤트 버블링 방지
+    if (!window.confirm('모든 캐릭터 / 스티커를 삭제하시겠습니까?')) return;
 
     setCharacters([]);
     setStickers([]);
-    customTypeArr.forEach((customType) => sessionStorage.removeItem(customType));
-  }
+    customTypeArr.forEach(customType => sessionStorage.removeItem(customType));
+  };
 
   useEffect(() => {
     // textarea readOnly 설정
@@ -136,13 +110,13 @@ export default function Display(props: DisplayProps) {
   }, [paintBackground]);
 
   useEffect(() => {
-    if (!characters.length && !stickers.length) { // 초기 렌더링 시
-      customTypeArr.forEach(customType => { // session에 저장된 캐릭터/스티커 가져와서 state 변경
+    if (!characters.length && !stickers.length) {
+      // 초기 렌더링 시
+      customTypeArr.forEach(customType => {
+        // session에 저장된 캐릭터/스티커 가져와서 state 변경
         if (sessionStorage.getItem(customType)) {
           const items: ItemObjectType[] = JSON.parse(sessionStorage.getItem(customType));
-          customType === 'character' ?
-            setCharacters(items) :
-            setStickers(items);
+          customType === 'character' ? setCharacters(items) : setStickers(items);
         }
       });
     }
@@ -154,82 +128,57 @@ export default function Display(props: DisplayProps) {
         id="display"
         ref={displayRef}
         className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-[#FDC7D4] bg-[#FDC7D4]"
-        onClick={e => handlerClickDisplay(e)}
       >
-        <textarea
+        <pre
           ref={textareaRef}
-          className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] p-2.5 focus:outline-none bg-brownBorder "
-          onChange={e => handlerChangeTextarea(e)}
-          placeholder="초대장 문구를 작성해주세요"
+          className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] bg-white bg-brownBorder p-2.5 focus:outline-none "
+          onKeyDown={e => handlerChangeTextarea(e)}
+          contenteditable="true"
           value={textValue}
-        ></textarea>
-        {
-          characters.map(({offsetX, offsetY, path, id}) => (
+        ></pre>
+        {characters.map(({ offsetX, offsetY, path, id }) => (
+          <div
+            data-item-id={id}
+            className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
+            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-50%,-50%)' }}
+            key={id}
+          >
             <div
-              data-item-id={id}
-              className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-              style={{left:`${offsetX}px`, top:`${offsetY}px`, transform:'translate(-50%,-50%)'}}
-              key={id}
+              className="cursor-pointer"
+              onClick={e => handlerDeleteItem(e, id, 'character')}
+              style={{ visibility: `${visibleCancelBtn}`, transform: 'translateY(100%)' }}
             >
-              <div
-                className='cursor-pointer'
-                onClick={(e) => handlerDeleteItem(e, id, 'character')}
-                style={{visibility: `${visibleCancelBtn}`, transform: 'translateY(100%)'}}
-              >
-                <img
-                  src='/creation/cancel.svg'
-                  alt='cancelButton'
-                  width={12}
-                  height={12}
-                />
-              </div>
-              <img
-                src={path}
-                alt={'character'}
-                width={30}
-                height={30}
-              />
+              <img src="/creation/cancel.svg" alt="cancelButton" width={12} height={12} />
             </div>
-          ))
-        }
-        {
-          stickers.map(({offsetX, offsetY, path, id}) => (
+            <img src={path} alt={'character'} width={30} height={30} />
+          </div>
+        ))}
+        {stickers.map(({ offsetX, offsetY, path, id }) => (
+          <div
+            data-item-id={id}
+            className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
+            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-50%,-50%)' }}
+            key={id}
+          >
             <div
-              data-item-id={id}
-              className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-              style={{left:`${offsetX}px`, top:`${offsetY}px`, transform:'translate(-50%,-50%)'}}
-              key={id}
+              className="cursor-pointer"
+              onClick={e => handlerDeleteItem(e, id, 'sticker')}
+              style={{ visibility: `${visibleCancelBtn}` }}
             >
-              <div
-                className='cursor-pointer'
-                onClick={(e) => handlerDeleteItem(e, id, 'sticker')}
-                style={{visibility: `${visibleCancelBtn}`}}  
-              >
-                <img
-                  src='/creation/cancel.svg'
-                  alt='cancelButton'
-                  width={12}
-                  height={12}
-                />
-              </div>
-              <img
-                src={path}
-                alt={'sticker'}
-                width={30}
-                height={30}
-              />
+              <img src="/creation/cancel.svg" alt="cancelButton" width={12} height={12} />
             </div>
-          ))
-        }
+            <img src={path} alt={'sticker'} width={30} height={30} />
+          </div>
+        ))}
         <div onClick={e => clearAllItems(e)}>
-            <img
-              className='absolute cursor-pointer'
-              src={'/creation/eraser.svg'}
-              alt={'eraserButton'}
-              width={24}
-              height={24}
-              style={{right: '10px', bottom: '10px', visibility: `${visibleCancelBtn}`}}
-            />
+          <img
+            className="absolute cursor-pointer"
+            src={'/creation/eraser.svg'}
+            alt={'eraserButton'}
+            width={24}
+            height={24}
+            style={{ right: '10px', bottom: '10px', visibility: `${visibleCancelBtn}` }}
+          />
         </div>
       </div>
     </div>
