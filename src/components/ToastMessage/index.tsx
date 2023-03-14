@@ -23,9 +23,9 @@ function ToastMessage(props: {
     <>
       {popToastMsg && (
         <div className="absolute">
-          <div className="top-1/10 mx-30 relative left-1/2 z-10 mt-11 flex h-[44px] w-[296px] translate-y-[-50%] translate-x-[-50%] items-center justify-center rounded-[6px] bg-white">
+          <div className="relative left-1/2 z-20 flex h-[44px] w-[296px] translate-y-[-50%] translate-x-[-50%] items-center justify-around rounded-[6px] bg-white px-[25px]">
             <Image src={image} width={22} height={18} alt="img" />
-            <p className="mx-3 leading-4">{message}</p>
+            <p className="text-[15px] leading-4">{message}</p>
           </div>
         </div>
       )}
