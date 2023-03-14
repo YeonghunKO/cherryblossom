@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Image from 'next/image';
 import { ItemObjectType } from '../Display';
 
