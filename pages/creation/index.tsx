@@ -45,14 +45,12 @@ const Creation = () => {
     });
 
     const filename = uuidv4();
-
-    await saveImg('display', filename);
-    const move = () =>
-      router.push({
-        pathname: '/complete/[img]',
-        query: { img: filename },
-      });
-    setTimeout(move, 2000);
+    
+    await saveImg('display', filename);    
+    router.push({
+      pathname: '/complete/[img]',
+      query: { img: filename },
+    });
   };
 
   const handleMouseMove = (e: MouseEvent | TouchEvent) => {
@@ -106,6 +104,8 @@ const Creation = () => {
       path: item.path,
       id,
     };
+
+    selectedItem === 'character' ? setSelectedCharacter(null) : setSelectedSticker(null);
 
     selectedItem === 'character'
       ? setCharacters(prev => [...prev, itemObject])
@@ -161,20 +161,20 @@ const Creation = () => {
           <img
             src={item.path}
             alt={'dragedItem'}
-            width={48}
-            height={48}
+            width={30}
+            height={30}
             className="absolute"
             style={{
               left: `${item.offsetX}px`,
               top: `${item.offsetY}px`,
-              transform: 'translate(-50%,-50%)',
+              transform: 'translate(-100%,-100%)',
             }}
           />
         )}
         <button
           disabled={!textValue.length}
           onClick={handleClickCreation}
-          className={`fixed bottom-0 z-10 h-12 w-full bg-blossom-gray  font-pretendard font-bold sm:max-w-[360px] ${
+          className={`fixed bottom-0 z-10 h-12 w-full bg-blossom-gray font-pretendard font-bold md:w-[360px] ${
             !textValue.length ? 'bg-blossom-gray text-gray-400' : ' bg-blossom-green'
           }`}
         >

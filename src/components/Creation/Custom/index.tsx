@@ -202,26 +202,8 @@ export default function Custom(props: CustomProps) {
     handleMouseMove,
   } = props;
 
-  const handleItemClick = (id: number) => {
-    if (selectedItem === 'background') {
-      setSelectedBackground(id);
-    }
-    if (selectedItem === 'character') {
-      if (selectedCharacter === id) {
-        // 이미 클릭된 아이템 클릭 시 selectedCharacter null로 변경
-        setSelectedCharacter(null);
-        return;
-      }
-      setSelectedCharacter(id);
-    }
-    if (selectedItem === 'sticker') {
-      if (selectedSticker === id) {
-        // 이미 클릭된 아이템 클릭 시 selectedSticker null로 변경
-        setSelectedSticker(null);
-        return;
-      }
-      setSelectedSticker(id);
-    }
+  const handleBackgroundClick = (id: number) => {
+    setSelectedBackground(id);
   };
 
   const handlerCustomTypeClick = (customType: CustomTypes) => {
@@ -231,7 +213,7 @@ export default function Custom(props: CustomProps) {
     setSelectedSticker(null);
   };
 
-  const handleMouseDown = (e: MouseEvent | TouchEvent, src: string) => {
+  const handleMouseDown = (e: MouseEvent | TouchEvent, src: string, id: number) => {
     document.querySelector('#creation-page')?.classList.add('overflow-hidden');
     document.querySelector('#creation-page')?.classList.add('cursor-pointer');
 
@@ -241,13 +223,15 @@ export default function Custom(props: CustomProps) {
 
     document.addEventListener('mousemove', ev => handleMouseMove(ev));
 
+    selectedItem === 'character' ? setSelectedCharacter(id) : setSelectedSticker(id);
+
     if (e.nativeEvent?.touches) {
       // 모바일 터치 환경
       setItem({
         offsetX: e.nativeEvent.touches?.[0].clientX,
         offsetY: e.nativeEvent.touches?.[0].clientY,
         path: selectedItem + 's/' + src,
-        id: -1,
+        id
       });
     } else {
       // 브라우저 클릭 환경
@@ -255,7 +239,7 @@ export default function Custom(props: CustomProps) {
         offsetX: e.clientX - pageLeft,
         offsetY: e.clientY - pageTop,
         path: selectedItem + 's/' + src,
-        id: -1,
+        id
       });
     }
   };
@@ -293,7 +277,7 @@ export default function Custom(props: CustomProps) {
                 }   border-[2px] border-solid  ${
                   selectedBackground === img.id ? ' border-blossom-green' : 'border-blossom-white'
                 }  overflow-hidden rounded-[14px]`}
-                onClick={() => handleItemClick(img.id)}
+                onClick={() => handleBackgroundClick(img.id)}
               >
                 <Image
                   className={`rounded-[14px]`}
@@ -313,8 +297,8 @@ export default function Custom(props: CustomProps) {
                 className={`h-[56px] w-[96px] cursor-pointer border-2 border-solid bg-blossom-white ${
                   selectedCharacter === img.id ? ' border-blossom-green' : 'border-blossom-white'
                 }   overflow-hidden rounded-[14px]`}
-                onMouseDown={e => handleMouseDown(e, img.value)}
-                onTouchStart={e => handleMouseDown(e, img.value)}
+                onMouseDown={e => handleMouseDown(e, img.value, img.id)}
+                onTouchStart={e => handleMouseDown(e, img.value, img.id)}
                 onTouchMove={e => handleMouseMove(e)}
               >
                 <Image src={`/characters/${img.preview}`} alt={img.value} width={96} height={56} className="previewImage" />
@@ -329,8 +313,8 @@ export default function Custom(props: CustomProps) {
                 className={`h-[56px] w-[96px] cursor-pointer border-2 border-solid bg-blossom-white ${
                   selectedSticker === img.id ? ' border-blossom-green' : 'border-blossom-white'
                 }   overflow-hidden rounded-[14px]`}
-                onMouseDown={e => handleMouseDown(e, img.value)}
-                onTouchStart={e => handleMouseDown(e, img.value)}
+                onMouseDown={e => handleMouseDown(e, img.value, img.id)}
+                onTouchStart={e => handleMouseDown(e, img.value, img.id)}
                 onTouchMove={e => handleMouseMove(e)}
               >
                 <Image src={`/stickers/${img.preview}`} alt={img.value} width={96} height={56} />

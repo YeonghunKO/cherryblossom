@@ -139,7 +139,7 @@ export default function Display(props: DisplayProps) {
           <div
             data-item-id={id}
             className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-50%,-50%)' }}
+            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-100%,-100%)' }}
             key={id}
           >
             <div
@@ -156,7 +156,7 @@ export default function Display(props: DisplayProps) {
           <div
             data-item-id={id}
             className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-50%,-50%)' }}
+            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-100%,-100%)' }}
             key={id}
           >
             <div
