@@ -161,8 +161,8 @@ const Creation = () => {
           <img
             src={item.path}
             alt={'dragedItem'}
-            width={30}
-            height={30}
+            width={48}
+            height={48}
             className="absolute"
             style={{
               left: `${item.offsetX}px`,

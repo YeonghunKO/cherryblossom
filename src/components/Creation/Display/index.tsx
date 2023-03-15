@@ -7,7 +7,6 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState,
 } from 'react';
 
 type CustomTypes = 'background' | 'character' | 'sticker';
@@ -133,7 +132,7 @@ export default function Display(props: DisplayProps) {
           ref={textareaRef}
           className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] bg-white bg-brownBorder p-2.5 focus:outline-none "
           onKeyDown={e => handlerChangeTextarea(e)}
-          contenteditable="true"
+          contentEditable="true"
           value={textValue}
         ></pre>
         {characters.map(({ offsetX, offsetY, path, id }) => (

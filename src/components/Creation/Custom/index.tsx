@@ -260,6 +260,10 @@ export default function Custom(props: CustomProps) {
     }
   };
 
+  const preventContextMenu = (e: TouchEvent) => {  // 현재 이벤트 감지 안됨. mouseDown할 때 setItem으로 리렌더링 돼서 그런듯.
+    e.preventDefault();
+  }
+
   return (
     <div className="mt-[8px] flex w-full flex-col items-center justify-center space-y-[8px]  bg-blossom-lightBlue px-[20px]">
       <div className="grid grid-cols-3 gap-4">
@@ -278,7 +282,7 @@ export default function Custom(props: CustomProps) {
       </div>
       <div className="border-1 my-[8px] w-[96%] border-t border-solid border-blossom-darkGray"></div>
 
-      <div className="scrollbar-hide grid max-h-[48vh] grid-cols-3 gap-4 overflow-auto pb-12">
+      <div className="scrollbar-hide grid max-h-[48vh] grid-cols-3 gap-4 overflow-auto pb-12" onContextMenu={(e: TouchEvent) => preventContextMenu(e)}>
         {selectedItem === 'background' &&
           BACKGROUND_IMAGE.map(img => {
             return (
@@ -313,7 +317,7 @@ export default function Custom(props: CustomProps) {
                 onTouchStart={e => handleMouseDown(e, img.value)}
                 onTouchMove={e => handleMouseMove(e)}
               >
-                <Image src={`/characters/${img.preview}`} alt={img.value} width={96} height={56} />
+                <Image src={`/characters/${img.preview}`} alt={img.value} width={96} height={56} className="previewImage" />
               </div>
             );
           })}
