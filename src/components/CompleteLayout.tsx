@@ -102,7 +102,7 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
       </div>
       <section
         id="footerBtn"
-        className={`absolute bottom-0 flex h-[48px] w-full cursor-pointer justify-center bg-[#FDE300] font-inter text-lg font-semibold leading-5 text-[#131210]`}
+        className={`absolute bottom-0 flex h-[48px] w-full cursor-pointer justify-center bg-[#FDE300] font-pretendard text-[19px] font-bold text-[#131210]`}
       >
         <button onClick={shareKakao} id="kakaotalk-sharing-btn">
           카카오톡 공유하기

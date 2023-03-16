@@ -66,9 +66,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-jamjaFlower)', ...fontFamily.sans],
-        title: ['var(--font-jejudoldam)'],
         pretendard: ['var(--font-pretendard)'],
-        inter: ['var(--font-inter)'],
       },
     },
     plugins: [],

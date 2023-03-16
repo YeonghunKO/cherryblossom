@@ -45,8 +45,8 @@ const Creation = () => {
     });
 
     const filename = uuidv4();
-    
-    await saveImg('display', filename);    
+
+    await saveImg('display', filename);
     router.push({
       pathname: '/complete/[img]',
       query: { img: filename },

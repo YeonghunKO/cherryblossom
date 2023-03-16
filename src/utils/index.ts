@@ -3,13 +3,14 @@ import { app } from '@/src/lib/firebase';
 
 import html2canvas from 'html2canvas';
 
-export const saveImg = (id: string, filename: string) => {
+export const saveImg = async (id: string, filename: string) => {
   const capture: HTMLElement | null = document.querySelector(`#${id}`);
 
   if (capture !== null) {
     return html2canvas(capture)
       .then(canvas => canvas.toDataURL(filename))
-      .then(data => sendImgToFirebase(data, filename));
+      .then(data => sendImgToFirebase(data, filename))
+      .catch(err => console.log(err));
   }
 };
 

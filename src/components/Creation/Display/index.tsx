@@ -130,7 +130,7 @@ export default function Display(props: DisplayProps) {
       >
         <pre
           ref={textareaRef}
-          className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] bg-white bg-brownBorder p-2.5 focus:outline-none "
+          className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] bg-white border border-solid border-[#FDC7D4] p-2.5 focus:outline-none "
           onKeyDown={e => handlerChangeTextarea(e)}
           contentEditable="true"
           value={textValue}
