@@ -3,6 +3,7 @@ import { copyLink } from '@/pages/api/share';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import ToastMessage from '@/src/components/ToastMessage';
+import Script from 'next/script';
 
 type propsType = {
   type: 'complete' | 'receive';
@@ -15,6 +16,7 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
   const [toastType, setToastType] = useState<'copy' | 'save'>('copy');
   const [checkClickedBtn, setCheckClickedBtn] = useState({ copy: false, save: false });
   const router = useRouter();
+  const innerHeight = window.innerHeight;
 
   const handleClickShareBtn = () => {
     setToastType('copy');
@@ -29,15 +31,11 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
     }
   };
 
-  useEffect(() => {
-    try {
-      if (!window.Kakao.isInitialized(process.env.NEXT_PUBLIC_KAKAO_KEY)) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY);
-      }
-    } catch (e) {
-      console.error(e);
+  const kakaoInit = () => {
+    if (!window.Kakao.isInitialized(process.env.NEXT_PUBLIC_KAKAO_KEY)) {
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY);
     }
-  }, []);
+  };
 
   const shareKakao = () => {
     window.Kakao.Share.sendCustom({
@@ -50,7 +48,16 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
 
   return (
     <div className="h-full w-full">
-      <div className="flex w-full justify-center">
+      <div
+        className={`${
+          innerHeight > 700 ? 'pt-[35%]' : 'pt-[44px]'
+        } flex flex-col justify-center px-5`}
+      >
+        <Script
+          strategy="afterInteractive"
+          src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js "
+          onLoad={kakaoInit}
+        />
         <ToastMessage
           popToastMsg={popToastMsg}
           setPopToastMsg={setPopToastMsg}
@@ -59,8 +66,7 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
             toastType === 'copy' ? '초대장 링크가 복사되었습니다.' : '초대장이 앨범에 담겼습니다.'
           }
         />
-      </div>
-      <div className="px-5 pt-[44px]">
+
         <section id="card" className="relative flex justify-center">
           <div className="absolute top-[44px] z-30 flex h-[40px] w-[240px] items-center justify-center rounded-[10px] border-[3px] border-solid border-[#FFC9D4] bg-[#FEEFF4] shadow-blossom-pink drop-shadow-pageTitle">
             벚꽃 초대장
@@ -73,21 +79,23 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
         </section>
 
         {type === 'complete' ? (
-          <section id="middleBtn" className="mt-4 flex w-full justify-between">
-            <button
-              onClick={handleClickShareBtn}
-              className={`${
-                !checkClickedBtn.copy ? 'bg-btn-yellow' : 'bg-[#AFE6AD]'
-              } h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white`}
-            >
-              <p>편지 보내기</p>
-            </button>
-            <button
-              onClick={handleClickRewriteBtn}
-              className={`ml-[15px] h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white bg-btn-yellow`}
-            >
-              <p>다시 작성하기</p>
-            </button>
+          <section id="middleBtn" className="mt-4 flex w-full justify-center">
+            <div className="flex w-full max-w-[320px] justify-between">
+              <button
+                onClick={handleClickShareBtn}
+                className={`${
+                  !checkClickedBtn.copy ? 'bg-btn-yellow' : 'bg-[#AFE6AD]'
+                } h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white`}
+              >
+                <p>편지 보내기</p>
+              </button>
+              <button
+                onClick={handleClickRewriteBtn}
+                className={`ml-[15px] h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white bg-btn-yellow`}
+              >
+                <p>다시 작성하기</p>
+              </button>
+            </div>
           </section>
         ) : (
           <section id="middleBtn" className="mt-4 flex w-full justify-between">
@@ -102,9 +110,17 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
       </div>
       <section
         id="footerBtn"
-        className={`absolute bottom-0 flex h-[48px] w-full cursor-pointer justify-center bg-[#FDE300] font-pretendard text-[19px] font-bold text-[#131210]`}
+        className={`${
+          innerHeight > 700 ? 'relative mt-10 block' : 'absolute bottom-0'
+        } flex w-full justify-center `}
       >
-        <button onClick={shareKakao} id="kakaotalk-sharing-btn">
+        <button
+          onClick={shareKakao}
+          id="kakaotalk-sharing-btn"
+          className={`${
+            innerHeight > 700 ? 'max-w-[320px]' : 'w-full'
+          } h-[48px] w-full cursor-pointer bg-[#FDE300] font-pretendard text-[19px] font-bold text-[#131210]`}
+        >
           카카오톡 공유하기
         </button>
       </section>

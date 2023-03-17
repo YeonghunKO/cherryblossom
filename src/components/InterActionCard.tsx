@@ -41,7 +41,7 @@ export default function InterActionCard({
   };
 
   return (
-    <div className="h-full w-full px-5 pt-[44px] pb-[66px]">
+    <div className="h-full max-h-[600px] w-full px-5 pt-[44px] pb-[66px]">
       <div className="relative flex h-full w-full justify-center rounded-[10px] border-4 border-solid border-[#F6F6F6] bg-[url('/backgrounds/0.svg')] bg-cover bg-center shadow-md">
         <div className="absolute z-0 mt-[260px] h-[110px] w-[250px] bg-white bg-auto"></div>
         <div className="absolute z-20 mt-[260px] flex justify-center">

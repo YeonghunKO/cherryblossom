@@ -12,10 +12,14 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    screens: {
+      web: { min: '420px' },
+      basic: { max: '420px' },
+      small: { max: '360px' },
+    },
     extend: {
       backgroundImage: {
         totalBg: "url('../public/backgrounds/totalBg.svg')",
-        brownBorder: "url('../public/creation/brownBorder.svg')",
       },
       dropShadow: {
         pageTitle: '0 4px 0px #FFC9D4',

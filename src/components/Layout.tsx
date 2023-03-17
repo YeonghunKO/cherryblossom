@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div
       className={`flex h-screen w-screen items-center justify-center bg-totalBg bg-cover bg-no-repeat ${gamjaFlower.variable} ${pretendard.variable} font-sans`}
     >
-      <div className="relative h-full w-full min-w-[360px] bg-skyBlue md:w-[360px]">{children}</div>
+      <div className="relative h-full w-full bg-skyBlue web:w-[360px] basic:w-full">{children}</div>
     </div>
   );
 }
