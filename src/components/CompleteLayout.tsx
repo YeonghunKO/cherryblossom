@@ -17,6 +17,7 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
   const [checkClickedBtn, setCheckClickedBtn] = useState({ copy: false, save: false });
   const router = useRouter();
   const innerHeight = window.innerHeight;
+  const { img: completePageQuery } = router.query;
 
   const handleClickShareBtn = () => {
     setToastType('copy');
@@ -41,7 +42,7 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
     window.Kakao.Share.sendCustom({
       templateId: 91057,
       templateArgs: {
-        imageName: `${imageName}`,
+        completePageQuery: `${completePageQuery} `,
       },
     });
   };
