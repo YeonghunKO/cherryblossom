@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { PLACEHODER_MESSAGE } from '@/src/constants/message';
 import Image from 'next/image';
 import {
   ChangeEvent,
@@ -7,6 +8,7 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 
 type CustomTypes = 'background' | 'character' | 'sticker';
@@ -48,9 +50,9 @@ export default function Display(props: DisplayProps) {
     setCharacters,
     setStickers,
   } = props;
+  const [isTextEditable, setIsTextEditable] = useState(true);
 
   const displayRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
-  const textareaRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
 
   const handlerDeleteItem = (e: MouseEvent, targetId: number, selected: CustomTypes) => {
     e.stopPropagation(); // click event가 버블링 되어 handlerClickDisplay가 호출되는 것을 방지
@@ -63,10 +65,6 @@ export default function Display(props: DisplayProps) {
     selected === 'character' ? setCharacters(filteredArr) : setStickers(filteredArr);
 
     sessionStorage.setItem(selected, JSON.stringify(filteredArr));
-  };
-
-  const handlerChangeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setTextValue(textareaRef.current?.textContent);
   };
 
   const paintBackground = useCallback(() => {
@@ -92,14 +90,30 @@ export default function Display(props: DisplayProps) {
     customTypeArr.forEach(customType => sessionStorage.removeItem(customType));
   };
 
+  const handleTextBlur = event => {
+    if (event.target.innerText === '') {
+      event.target.innerText = PLACEHODER_MESSAGE;
+    }
+  };
+  const handleTextChange = event => {
+    setTextValue(event.target.innerText);
+  };
+  const handleTextFocus = event => {
+    if (event.target.innerText === PLACEHODER_MESSAGE) {
+      event.target.innerText = '';
+    }
+  };
+
   useEffect(() => {
     // textarea readOnly 설정
     if (selectedCharacter === null && selectedSticker === null) {
       // 캐릭터, 스티커 둘 중 어느것도 선택하지 않았을 때
-      if (textareaRef.current) textareaRef.current.readOnly = false; // textarea 편집 가능
+      // textarea 편집 가능
+      setIsTextEditable(true);
     } else {
       // 캐릭터, 스티커 둘 중 하나를 선택했을 때
-      if (textareaRef.current) textareaRef.current.readOnly = true; // textarea 편집 불가
+      // textarea 편집 불가
+      setIsTextEditable(false);
     }
   }, [selectedBackground, selectedCharacter, selectedSticker]);
 
@@ -111,6 +125,7 @@ export default function Display(props: DisplayProps) {
   useEffect(() => {
     if (!characters.length && !stickers.length) {
       // 초기 렌더링 시
+
       customTypeArr.forEach(customType => {
         // session에 저장된 캐릭터/스티커 가져와서 state 변경
         if (sessionStorage.getItem(customType)) {
@@ -129,17 +144,25 @@ export default function Display(props: DisplayProps) {
         className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-[#FDC7D4] bg-[#FDC7D4]"
       >
         <pre
-          ref={textareaRef}
-          className="h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] bg-white border border-solid border-[#FDC7D4] p-2.5 focus:outline-none "
-          onKeyDown={e => handlerChangeTextarea(e)}
-          contentEditable="true"
-          value={textValue}
+          className={`${
+            !textValue && 'text-gray-400'
+          } h-[140px] w-[220px] resize-none  overflow-hidden whitespace-pre-wrap break-words rounded-[10px] border border-solid border-[#FDC7D4] bg-white p-2.5 focus:outline-none `}
+          onInput={handleTextChange}
+          onBlur={handleTextBlur}
+          onFocus={handleTextFocus}
+          contentEditable={isTextEditable}
+          dangerouslySetInnerHTML={{ __html: !textValue === '' ? textValue : PLACEHODER_MESSAGE }}
         ></pre>
+
         {characters.map(({ offsetX, offsetY, path, id }) => (
           <div
             data-item-id={id}
             className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-100%,-100%)' }}
+            style={{
+              left: `${offsetX}px`,
+              top: `${offsetY}px`,
+              transform: 'translate(-100%,-100%)',
+            }}
             key={id}
           >
             <div
@@ -156,7 +179,11 @@ export default function Display(props: DisplayProps) {
           <div
             data-item-id={id}
             className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-100%,-100%)' }}
+            style={{
+              left: `${offsetX}px`,
+              top: `${offsetY}px`,
+              transform: 'translate(-100%,-100%)',
+            }}
             key={id}
           >
             <div

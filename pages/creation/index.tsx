@@ -9,22 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 import Head from 'next/head';
 import { flushSync } from 'react-dom';
 import { ItemObjectType } from '../../src/components/Creation/Display';
+import { PLACEHODER_MESSAGE } from '@/src/constants/message';
 
 /**
  * 초대장 생성 페이지
  */
 
-/**
- * [아메 TODO]
- * 완성된 디자인 추가하기✅
- * 완성하기 버튼 아래 고정하기 ✅
- * 버튼 간격 조정 ✅
- * 스크롤바 안보이게 ✅
- * 이미지 캡쳐 시 줄 바꿈 안되는 문제 확인하기✅
- * 글씨 크기 수정하기(title, button)✅
- * 스타일링
- * 로딩 스피너
- */
 type CustomTypes = 'background' | 'character' | 'sticker';
 
 const Creation = () => {
@@ -38,6 +28,8 @@ const Creation = () => {
   const [item, setItem] = useState<ItemObjectType | null>();
   const [characters, setCharacters] = useState<ItemObjectType[]>([]);
   const [stickers, setStickers] = useState<ItemObjectType[]>([]);
+
+  const buttonActiveCondition = textValue === PLACEHODER_MESSAGE || !textValue.length;
 
   const handleClickCreation = async () => {
     flushSync(() => {
@@ -172,10 +164,10 @@ const Creation = () => {
           />
         )}
         <button
-          disabled={!textValue.length}
+          disabled={buttonActiveCondition}
           onClick={handleClickCreation}
           className={`fixed bottom-0 z-10 h-12 w-full bg-blossom-gray font-pretendard font-bold web:w-[360px] basic:w-full  ${
-            !textValue.length ? 'bg-blossom-gray text-gray-400' : ' bg-blossom-green'
+            buttonActiveCondition ? 'bg-blossom-gray text-gray-400' : ' bg-blossom-green'
           }`}
         >
           초대장 완성하기

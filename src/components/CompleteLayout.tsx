@@ -42,7 +42,7 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
     window.Kakao.Share.sendCustom({
       templateId: 91057,
       templateArgs: {
-        completePageQuery: `${completePageQuery} `,
+        completePageQuery: `${completePageQuery}`,
       },
     });
   };
