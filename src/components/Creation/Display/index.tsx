@@ -11,12 +11,13 @@ import {
   useState,
 } from 'react';
 
-type CustomTypes = 'background' | 'character' | 'sticker';
+export type CategoryTypes = 'character' | 'sticker';
 export type ItemObjectType = {
   offsetX: number;
   offsetY: number;
   path: string;
   id: number;
+  category: CategoryTypes;
 };
 type DisplayProps = {
   selectedBackground: number | null;
@@ -29,6 +30,10 @@ type DisplayProps = {
   stickers: ItemObjectType[];
   setCharacters: (characters: ItemObjectType[]) => void;
   setStickers: (stickers: ItemObjectType[]) => void;
+  editableItem: ItemObjectType;
+  setEditableItem: (item: ItemObjectType) => void;
+  handleMouseMove: (e: MouseEvent | TouchEvent) => void;
+  setDraggable: (flag: boolean) => void;
 };
 
 const customTypeArr = ['character', 'sticker'];
@@ -49,22 +54,58 @@ export default function Display(props: DisplayProps) {
     stickers,
     setCharacters,
     setStickers,
+    editableItem,
+    setEditableItem,
+    handleMouseMove,
+    setDraggable={setDraggable}
   } = props;
   const [isTextEditable, setIsTextEditable] = useState(true);
 
   const displayRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
-  const handlerDeleteItem = (e: MouseEvent, targetId: number, selected: CustomTypes) => {
-    e.stopPropagation(); // click event가 버블링 되어 handlerClickDisplay가 호출되는 것을 방지
+  const makeItemEditable = (currId: number, category: CategoryTypes) => {
+    // 이미 editableItem이 존재하면 함수 종료
+    if (editableItem)
+      return;
 
+    // 클릭한 아이템을 기존 아이템 배열에서 제거
+    deleteItemFromArray(currId, category);
+
+    // 클릭한 아이템을 editableItem으로 설정
+    category === 'character' ?
+      characters.forEach((item) => {
+        if (item.id === currId) {
+          setEditableItem(item);
+        }
+      }) :
+      stickers.forEach((item) => {
+        if (item.id === currId) {
+          setEditableItem(item);
+        }
+      });
+  }
+
+  const handleMouseDown = () => {
+    if (!editableItem) {
+      return;
+    }
+    document.querySelector('#creation-page')?.classList.add('overflow-hidden');
+    setDraggable(true);
+  }
+
+  const deleteItemFromArray = (currId: number, category: CategoryTypes) => {
     const filteredArr =
-      selected === 'character'
-        ? characters.filter(item => item.id !== targetId)
-        : stickers.filter(item => item.id !== targetId);
+      category === 'character'
+        ? characters.filter(({id}) => id !== currId)
+        : stickers.filter(({id}) => id !== currId);
 
-    selected === 'character' ? setCharacters(filteredArr) : setStickers(filteredArr);
+    category === 'character' ? setCharacters(filteredArr) : setStickers(filteredArr);
 
-    sessionStorage.setItem(selected, JSON.stringify(filteredArr));
+    sessionStorage.setItem(category, JSON.stringify(filteredArr));
+  }
+
+  const handlerDeleteItem = () => {
+    setEditableItem(null);
   };
 
   const paintBackground = useCallback(() => {
@@ -142,6 +183,8 @@ export default function Display(props: DisplayProps) {
         id="display"
         ref={displayRef}
         className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-[#FDC7D4] bg-[#FDC7D4]"
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleMouseMove}
       >
         <pre
           className={`${
@@ -153,47 +196,24 @@ export default function Display(props: DisplayProps) {
           contentEditable={isTextEditable}
           dangerouslySetInnerHTML={{ __html: !textValue === '' ? textValue : PLACEHODER_MESSAGE }}
         ></pre>
-
-        {characters.map(({ offsetX, offsetY, path, id }) => (
+        {characters.map(({ offsetX, offsetY, path, id, category }: ItemObjectType, idx) => (
           <div
-            data-item-id={id}
-            className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-            style={{
-              left: `${offsetX}px`,
-              top: `${offsetY}px`,
-              transform: 'translate(-100%,-100%)',
-            }}
-            key={id}
+            className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px] cursor-pointer`}
+            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-50%,-50%)' }}
+            key={idx}
+            onClick={() => makeItemEditable(id, category)}
           >
-            <div
-              className="cursor-pointer"
-              onClick={e => handlerDeleteItem(e, id, 'character')}
-              style={{ visibility: `${visibleCancelBtn}`, transform: 'translateY(100%)' }}
-            >
-              <img src="/creation/cancel.svg" alt="cancelButton" width={12} height={12} />
-            </div>
-            <img src={path} alt={'character'} width={30} height={30} />
+              <img src={path} alt={'character'} width={30} height={30} />
           </div>
         ))}
-        {stickers.map(({ offsetX, offsetY, path, id }) => (
+        {stickers.map(({ offsetX, offsetY, path, id, category }: ItemObjectType, idx) => (
           <div
-            data-item-id={id}
-            className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px]`}
-            style={{
-              left: `${offsetX}px`,
-              top: `${offsetY}px`,
-              transform: 'translate(-100%,-100%)',
-            }}
-            key={id}
+            className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px] cursor-pointer`}
+            style={{ left: `${offsetX}px`, top: `${offsetY}px`, transform: 'translate(-50%,-50%)' }}
+            key={idx}
+            onClick={() => makeItemEditable(id, category)}
           >
-            <div
-              className="cursor-pointer"
-              onClick={e => handlerDeleteItem(e, id, 'sticker')}
-              style={{ visibility: `${visibleCancelBtn}` }}
-            >
-              <img src="/creation/cancel.svg" alt="cancelButton" width={12} height={12} />
-            </div>
-            <img src={path} alt={'sticker'} width={30} height={30} />
+              <img src={path} alt={'sticker'} width={30} height={30} />
           </div>
         ))}
         <div onClick={e => clearAllItems(e)}>
@@ -206,6 +226,31 @@ export default function Display(props: DisplayProps) {
             style={{ right: '10px', bottom: '10px', visibility: `${visibleCancelBtn}` }}
           />
         </div>
+        {editableItem && (
+          <div
+            className={`absolute flex flex-col items-end cursor-pointer`}
+            style={{ left: `${editableItem.offsetX}px`, top: `${editableItem.offsetY}px`, transform: 'translate(-50%,-50%)' }}
+          >
+            <div
+              className="cursor-pointer"
+              onMouseDown={handlerDeleteItem}
+              onTouchStart={handlerDeleteItem}
+            >
+              <img src="/creation/cancel.svg" alt="cancelButton" width={16} height={16} />
+            </div>
+            <div
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleMouseDown}
+            >
+              <img
+                src={editableItem.path}
+                alt={'editableItem'}
+                width={40}
+                height={40}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

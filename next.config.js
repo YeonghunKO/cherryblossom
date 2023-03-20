@@ -11,5 +11,6 @@ module.exports = withBundleAnalyzer({
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: ['firebasestorage.googleapis.com'],
     dangerouslyAllowSVG: true,
+    formats: ['image/avif', 'image/webp'],
   },
 });

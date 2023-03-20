@@ -23,6 +23,7 @@ module.exports = {
       },
       dropShadow: {
         pageTitle: '0 4px 0px #FFC9D4',
+        modal: '0px 1px 2px rgba(0, 0, 0, 0.2)',
       },
       colors: {
         skyBlue: '#CCE7F8',
@@ -69,7 +70,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-jamjaFlower)', ...fontFamily.sans],
+        sans: ['var(--font-gamjaFlower)', ...fontFamily.sans],
         pretendard: ['var(--font-pretendard)'],
       },
     },

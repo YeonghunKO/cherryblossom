@@ -1,13 +1,16 @@
 import localFont from '@next/font/local';
+import { Gamja_Flower } from '@next/font/google';
 
-const gamjaFlower = localFont({
-  src: '../../public/fonts/GamjaFlower-Regular.ttf',
-  variable: '--font-jamjaFlower',
+const gamjaFlower = Gamja_Flower({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-gamjaFlower',
 });
 
 const pretendard = localFont({
   src: '../../public/fonts/Pretendard-Regular.woff',
   variable: '--font-pretendard',
+  preload: false,
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

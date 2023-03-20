@@ -8,7 +8,7 @@ export const saveImg = async (id: string, filename: string) => {
 
   if (capture !== null) {
     return html2canvas(capture)
-      .then(canvas => canvas.toDataURL(filename))
+      .then(canvas => canvas.toDataURL('image/png', 1.0))
       .then(data => sendImgToFirebase(data, filename))
       .catch(err => console.log(err));
   }
