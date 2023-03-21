@@ -45,7 +45,7 @@ export default function InterActionCard({
     <CardContainerBackGroundImg>
       <div className="absolute z-0 mt-[260px] h-[110px] w-[250px] bg-white bg-auto"></div>
       <div className="absolute z-20 mt-[260px] flex justify-center">
-        <Image src="/envelopeLower.svg" alt="evelopeLower" width={254} height={120} />
+        <Image src="/envelopeLower.svg" alt="evelopeLower" width={254} height={120} priority />
         {isOpenBtn && (
           <button
             onClick={handleClickOpenBtn}
@@ -60,7 +60,7 @@ export default function InterActionCard({
           !isOpenBtn ? 'animate-[envelope_500ms_linear]' : 'rotate-180'
         }`}
       >
-        <Image src="/envelopeTop.svg" alt="evelopeLower" width={258} height={80} />
+        <Image src="/envelopeTop.svg" alt="evelopeLower" width={258} height={80} priority />
       </div>
 
       {isPullOut && (
@@ -69,7 +69,9 @@ export default function InterActionCard({
                 bg-white ease-in-out"
         >
           <div className="relative h-full w-full">
-            {imageUrl !== undefined && <Image src={imageUrl} alt="image" fill />}
+            {imageUrl !== undefined && (
+              <Image src={imageUrl} alt="invitation-img" fill loading="eager" />
+            )}
           </div>
         </div>
       )}

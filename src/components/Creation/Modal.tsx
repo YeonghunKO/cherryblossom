@@ -17,7 +17,7 @@ export default function Modal({ handleModal }: ModalProps) {
             <div
               className={`z-10 flex h-10 w-60 translate-y-1/2 items-center justify-center rounded-[10px] border-[3px] border-solid border-blossom-pink bg-blossom-lightPink py-3 text-center font-normal text-blossom-black	 shadow-blossom-pink drop-shadow-pageTitle`}
             >
-              나만의 벚꽃 초대장
+              나만의 벚꽃 초대장 만들기
             </div>
             <div className="relative w-[320px] max-w-lg rounded-md border-[1px] border-solid border-blossom-pink bg-white p-[20px] shadow-lg">
               <div className="sm:flex mt-3">
@@ -28,7 +28,7 @@ export default function Modal({ handleModal }: ModalProps) {
                     className="mt-[18px] h-[36px] w-full rounded-[10px] border-[2px]  border-solid border-white bg-btn-yellow p-2.5 text-blossom-black  drop-shadow-modal hover:bg-blossom-green"
                     onClick={() => handleModal(false)}
                   >
-                    넘기기
+                    닫기
                   </button>
                 </div>
               </div>

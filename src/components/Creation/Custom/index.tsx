@@ -216,7 +216,7 @@ export default function Custom(props: CustomProps) {
 
   const handleItemClick = (src: string, category: CategoryTypes) => {
     const canvasRect = document.querySelector('#display')?.getBoundingClientRect();
-    
+
     const offsetX = canvasRect?.width / 2;
     const offsetY = canvasRect?.height / 2;
 
@@ -228,14 +228,14 @@ export default function Custom(props: CustomProps) {
       offsetY,
       path: selectedItem + 's/' + src,
       id,
-      category
-    }
+      category,
+    };
 
     setEditableItem(newItem);
-  }
+  };
 
   return (
-    <div className="mt-[8px] flex w-full flex-col items-center justify-center space-y-[8px]  bg-blossom-lightBlue px-[20px]">
+    <div className="mt-[8px] mb-24 flex w-full flex-col items-center justify-center space-y-[8px]  bg-blossom-lightBlue px-[20px]">
       <div className="grid w-[320px] grid-cols-3 gap-4">
         {CUSTOM_ITEMS.map(custom => {
           return (
@@ -252,7 +252,7 @@ export default function Custom(props: CustomProps) {
       </div>
       <div className="border-1 mx- my-[8px] w-[320px] border-t border-solid border-blossom-darkGray"></div>
 
-      <div className="scrollbar-hide grid max-h-[48vh] w-[320px] grid-cols-3 gap-4 overflow-auto pb-12">
+      <div className="scrollbar-hide  grid max-h-[48vh] w-[320px] grid-cols-3 gap-4 overflow-auto">
         {selectedItem === 'background' &&
           BACKGROUND_IMAGE.map(img => {
             return (
@@ -304,6 +304,7 @@ export default function Custom(props: CustomProps) {
             );
           })}
       </div>
+      <div className="h-14"></div>
     </div>
   );
 }

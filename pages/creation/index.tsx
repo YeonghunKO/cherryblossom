@@ -5,12 +5,16 @@ import Display from '@/src/components/Creation/Display';
 import PageTitle from '@/src/components/Creation/PageTitle';
 import { saveImg } from '@/src/utils';
 import { useRouter } from 'next/router';
-import { v4 as uuidv4 } from 'uuid';
+
 import Head from 'next/head';
+
 import { flushSync } from 'react-dom';
+
+import { v4 as uuidv4 } from 'uuid';
+
 import { ItemObjectType } from '../../src/components/Creation/Display';
 import Modal from '@/src/components/Creation/Modal';
-import { PLACEHODER_MESSAGE } from '@/src/constants/message';
+import { MESSAGE } from '@/src/constants/message';
 
 /**
  * 초대장 생성 페이지
@@ -24,15 +28,17 @@ const Creation = () => {
   const [selectedBackground, setSelectedBackground] = useState<number | null>(null);
   const [selectedCharacter, setSelectedCharacter] = useState<number | null>(null);
   const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
+
   const [textValue, setTextValue] = useState('');
   const [visibleCancelBtn, setVisibleCancelBtn] = useState('visible');
+
   const [editableItem, setEditableItem] = useState<ItemObjectType | null>();
   const [characters, setCharacters] = useState<ItemObjectType[]>([]);
   const [stickers, setStickers] = useState<ItemObjectType[]>([]);
   const [draggable, setDraggable] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const buttonActiveCondition = textValue === PLACEHODER_MESSAGE || !textValue.length;
+  const buttonActiveCondition = textValue === MESSAGE.placeholder || !textValue.length;
 
   const handleClickCreation = async () => {
     flushSync(() => {
@@ -41,7 +47,7 @@ const Creation = () => {
 
     const filename = uuidv4();
 
-    await saveImg('display', filename);
+    await saveImg('outerDisplay', filename);
     router.push({
       pathname: '/complete/[img]',
       query: { img: filename },
@@ -49,9 +55,8 @@ const Creation = () => {
   };
 
   const handleMouseMove = (e: MouseEvent | TouchEvent) => {
-    if (!draggable)
-      return;
-    
+    if (!draggable) return;
+
     const displayRect = document.querySelector('#display')?.getBoundingClientRect();
     const displayLeft = displayRect?.left; // 전체 브라우저 화면에서 현재 page 컴포넌트 기준으로 좌표 계산
     const displayTop = displayRect?.top;
@@ -80,32 +85,26 @@ const Creation = () => {
   };
 
   const handleMouseUp = (e: MouseEvent | TouchEvent) => {
-    if (!editableItem)
-      return;
-    e.preventDefault();  // mouseUp 뒤에 따라오는 click event 막기
+    if (!editableItem) return;
+    e.preventDefault(); // mouseUp 뒤에 따라오는 click event 막기
 
-    document.querySelector('#creation-page')?.classList.remove('overflow-hidden');
+    document.querySelector('body').classList.remove('overflow-hidden');
+    document.querySelector('body').classList.remove('h-full');
     const category = editableItem.category;
-    
+
     sessionStorage.setItem(
       category,
       JSON.stringify(
         category === 'character' ? [...characters, editableItem] : [...stickers, editableItem]
       )
     );
-        
-    category === 'character' ? setCharacters(prev => [...prev, editableItem]) : setStickers(prev => [...prev, editableItem]);
+
+    category === 'character'
+      ? setCharacters(prev => [...prev, editableItem])
+      : setStickers(prev => [...prev, editableItem]);
     setDraggable(false);
     setEditableItem(null);
   };
-
-  useEffect(() => {
-    // 처음 방문했을 때만 사용법 모달 자동으로 보여주기
-    if (!localStorage.getItem('isFirstVisit')) {
-      setIsModalOpen(true);
-      localStorage.setItem('isFirstVisit', 'false');
-    }
-  }, []);
 
   return (
     <>
@@ -137,6 +136,7 @@ const Creation = () => {
           handleMouseMove={handleMouseMove}
           draggable={draggable}
           setDraggable={setDraggable}
+          setIsModalOpen={setIsModalOpen}
         />
         <Custom
           selectedBackground={selectedBackground}
