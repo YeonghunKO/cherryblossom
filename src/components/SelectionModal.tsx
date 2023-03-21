@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import React, { Dispatch, SetStateAction } from 'react';
 import imageSrc from '../../public/modal_face_icon.svg';
 
@@ -9,8 +9,8 @@ type Props = {
 };
 export default function SelectionModal({ message, setIsModal, handleClickAgreeButton }: Props) {
   return (
-    <div className="z-100 absolute top-20 z-50 flex w-full justify-center font-pretendard">
-      <div className="absolute left-1/2 z-20 flex h-[91px] w-full max-w-[318px] translate-y-[-50%] translate-x-[-50%] flex-col items-center justify-around rounded-[6px] bg-white px-[25px] shadow-md shadow-sm">
+    <div className="z-100 absolute top-52 z-50 flex w-full justify-center font-pretendard">
+      <div className="absolute left-1/2 z-20 flex h-[91px] w-full max-w-[320px] translate-y-[-50%] translate-x-[-50%] flex-col items-center justify-around rounded-[6px] bg-white px-[25px] shadow-md ">
         <div className="flex">
           <Image src={imageSrc} width={20} height={20} alt="img" />
           <p className="ml-[7px] text-[15px] font-bold leading-[24px]">{message}</p>
