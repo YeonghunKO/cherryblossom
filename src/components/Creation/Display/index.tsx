@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import { ERROR_MESSAGE, MESSAGE } from '@/src/constants/message';
 import { MouseEvent, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import SelectionModal from '../../SelectionModal';
 
 export type CategoryTypes = 'character' | 'sticker';
 export type ItemObjectType = {
@@ -56,6 +57,7 @@ export default function Display(props: DisplayProps) {
     setIsModalOpen,
   } = props;
   const [isTextEditable, setIsTextEditable] = useState(true);
+  const [isModal, setIsModal] = useState(false);
 
   const displayRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
@@ -118,13 +120,16 @@ export default function Display(props: DisplayProps) {
     displayRef.current.style = `background-image:url(/backgrounds/${backgroundNumber}.svg); background-size:cover`; // background 이미지 그리기
   }, [selectedBackground]);
 
-  const clearAllItems = (e: MouseEvent) => {
-    e.stopPropagation(); // 이벤트 버블링 방지
-    if (!window.confirm('모든 캐릭터 / 스티커를 삭제하시겠습니까?')) return;
-
+  const clearAllItems = () => {
     setCharacters([]);
     setStickers([]);
     customTypeArr.forEach(customType => sessionStorage.removeItem(customType));
+    setIsModal(false);
+  };
+
+  const handleClickClearModal = (e: MouseEvent) => {
+    e.stopPropagation();
+    setIsModal(true);
   };
 
   const handleTextBlur = event => {
@@ -148,7 +153,6 @@ export default function Display(props: DisplayProps) {
     const lines = event.target.innerHTML.split('<div>');
     // h-140px일 떄 최대 height는 8
     // 8줄일 때 enter 입력 금지
-    console.log(event.target.innerText.length);
     if (event.key === 'Enter' && lines.length === 8) {
       event.preventDefault();
       return alert(ERROR_MESSAGE.message_length_limit);
@@ -265,7 +269,7 @@ export default function Display(props: DisplayProps) {
               <img src={path} alt={'sticker'} width={30} height={30} />
             </div>
           ))}
-          <div onClick={e => clearAllItems(e)}>
+          <div onClick={e => handleClickClearModal(e)}>
             <img
               className="absolute ml-[10px] cursor-pointer"
               src={'/creation/eraser.svg'}
@@ -275,6 +279,13 @@ export default function Display(props: DisplayProps) {
               style={{ bottom: '10px', visibility: `${visibleCancelBtn}` }}
             />
           </div>
+          {isModal && (
+            <SelectionModal
+              message="모든 캐릭터 / 스티커를 삭제하시겠습니까?"
+              setIsModal={setIsModal}
+              handleClickAgreeButton={() => clearAllItems()}
+            />
+          )}
           {editableItem && (
             <div
               className={`absolute flex cursor-pointer flex-col items-end`}
