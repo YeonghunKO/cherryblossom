@@ -1,30 +1,21 @@
-import CompleteLayout from '@/src/components/CompleteLayout';
-import InterActionCard from '@/src/components/InterActionCard';
-import React, { useState } from 'react';
-
+import React from 'react';
 import Head from 'next/head';
 import { getImageUrlFromFirebase } from '@/src/utils';
 import { GetServerSidePropsContext } from 'next';
+import dynamic from 'next/dynamic';
+import Loading from '@/src/components/Loading/Loading';
+
+const ReceivedComponent = dynamic(() => import('./ReceivedComponent'), {
+  loading: () => <Loading />,
+});
 
 export default function Received({ imgUrl, imageName }: { imgUrl: string; imageName: string }) {
-  const [isAnimationOver, setIsAnimationOver] = useState(false);
-
   return (
     <>
       <Head>
         <title>✨초대장이 도착했습니다✨</title>
       </Head>
-      <div className="relative flex h-full w-full items-center justify-center">
-        {isAnimationOver ? (
-          <CompleteLayout type="receive" imageUrl={imgUrl} imageName={imageName} />
-        ) : (
-          <InterActionCard
-            needOpenBtn={true}
-            imageUrl={imgUrl}
-            setIsAnimationOver={setIsAnimationOver}
-          />
-        )}
-      </div>
+      <ReceivedComponent imgUrl={imgUrl} imageName={imageName} />
     </>
   );
 }

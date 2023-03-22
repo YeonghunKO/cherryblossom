@@ -1,15 +1,15 @@
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from 'react';
 import CardContainerBackGroundImg from './CardContainerBackGroundImg';
 
 export default function InterActionCard({
   needOpenBtn,
   setIsAnimationOver,
-  imageUrl,
+  image,
 }: {
   needOpenBtn: boolean;
-  imageUrl: string | undefined;
   setIsAnimationOver?: Dispatch<SetStateAction<boolean>>;
+  image: ReactElement;
 }) {
   const [isPullOut, setIsPullOut] = useState(false);
   const [isOpenBtn, setIsOpenBtn] = useState(false);
@@ -68,11 +68,7 @@ export default function InterActionCard({
           className="z-20 mt-[120px] flex h-[260px] w-[280px] animate-[pull-out_1500ms] items-center justify-center overflow-hidden rounded-[10px] border border-solid border-[#FDC7D4]
                 bg-white ease-in-out"
         >
-          <div className="relative h-full w-full">
-            {imageUrl !== undefined && (
-              <Image src={imageUrl} alt="invitation-img" fill loading="eager" />
-            )}
-          </div>
+          <div className="relative h-full w-full">{image}</div>
         </div>
       )}
     </CardContainerBackGroundImg>

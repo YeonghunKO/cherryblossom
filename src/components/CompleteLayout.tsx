@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { copyLink } from '@/pages/api/share';
@@ -13,11 +13,11 @@ import { MESSAGE } from '../constants/message';
 
 type propsType = {
   type: 'complete' | 'receive';
-  imageUrl: string | undefined;
   imageName: string;
+  image: ReactElement;
 };
 
-export default function CompleteLayout({ type, imageUrl, imageName }: propsType) {
+export default function CompleteLayout({ type, imageName, image }: propsType) {
   const [popToastMsg, setPopToastMsg] = useState(false);
   const [toastType, setToastType] = useState<'copy' | 'save'>('copy');
   const [checkClickedBtn, setCheckClickedBtn] = useState({ copy: false, save: false });
@@ -73,20 +73,14 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
           src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js "
           onLoad={kakaoInit}
         />
-        <ToastMessage
-          popToastMsg={popToastMsg}
-          setPopToastMsg={setPopToastMsg}
-          image={'/mail_icon.svg'}
-          message={toastType === 'copy' ? MESSAGE.copy : MESSAGE.save}
-        />
-        <div
-          onClick={handleQuestionClick}
-          className="absolute top-[20px] right-[20px] cursor-pointer"
-        >
-          <Image src={'/question_mark.svg'} alt="question_mark" width={24} height={24} />
-        </div>
 
         <section id="card" className="relative flex justify-center">
+          <ToastMessage
+            popToastMsg={popToastMsg}
+            setPopToastMsg={setPopToastMsg}
+            image={'/mail_icon.svg'}
+            message={toastType === 'copy' ? MESSAGE.copy : MESSAGE.save}
+          />
           {isModal && (
             <SelectionModal
               message="서비스에 대한 의견을 보내시겠습니까?"
@@ -94,15 +88,18 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
               handleClickAgreeButton={handleClickAgreeButton}
             />
           )}
+          <div
+            onClick={handleQuestionClick}
+            className="absolute top-[30px] flex w-full max-w-[320px] cursor-pointer justify-end"
+          >
+            <Image src={'/question_mark.svg'} alt="question_mark" width={28} height={28} />
+          </div>
+
           <div className="absolute top-[44px] z-30 flex h-[40px] w-[240px] items-center justify-center rounded-[10px] border-[3px] border-solid border-[#FFC9D4] bg-[#FEEFF4] shadow-blossom-pink drop-shadow-pageTitle">
             벚꽃 초대장
           </div>
           <div className="relative z-20 mt-[66px] flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-[8px] bg-white shadow-md">
-            <div className="relative h-full w-full">
-              {imageUrl !== undefined && (
-                <Image src={imageUrl} alt="invitation-img" fill priority loading="eager" />
-              )}
-            </div>
+            <div className="relative h-full w-full">{image}</div>
           </div>
         </section>
 
@@ -134,11 +131,10 @@ export default function CompleteLayout({ type, imageUrl, imageName }: propsType)
             </div>
           </section>
         ) : (
-          <section id="middleBtn" className="mt-4 flex w-full justify-between">
+          <section id="middleBtn" className="mt-4 flex w-full justify-center">
             <button
               onClick={handleClickRewriteBtn}
-              className="h-[50px] w-full grow-0 cursor-pointer rounded-[10px] border border-solid border-white bg-btn-yellow text-[22px]"
-              // className="h-[50px] w-full max-w-[320px] grow-0 cursor-pointer rounded-[10px] border border-solid border-white bg-btn-yellow"
+              className="h-[50px] w-full max-w-[320px] grow-0 cursor-pointer rounded-[10px] border border-solid border-white bg-btn-yellow"
             >
               <p>나도 초대장 만들어보기</p>
             </button>
