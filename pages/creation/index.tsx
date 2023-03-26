@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Custom from '@/src/components/Creation/Custom';
 import Display from '@/src/components/Creation/Display';
 import PageTitle from '@/src/components/Creation/PageTitle';
@@ -167,3 +167,9 @@ const Creation = () => {
 };
 
 export default Creation;
+
+export const getStaticProps = (context: GetStaticPropsContext) => {
+  return {
+    props: {},
+  };
+};
