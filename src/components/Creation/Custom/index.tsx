@@ -235,7 +235,7 @@ export default function Custom(props: CustomProps) {
   };
 
   return (
-    <div className="mt-[8px] mb-24 flex h-[calc(100vh-348px)] w-full flex-col items-center justify-center space-y-[8px]  bg-blossom-lightBlue px-[20px]">
+    <div className="mt-[8px] mb-24 flex h-[calc(100vh-348px)] w-full flex-col items-center space-y-[8px]  bg-blossom-lightBlue px-[20px]">
       <div className="grid w-[320px] grid-cols-3 gap-4">
         {CUSTOM_ITEMS.map(custom => {
           return (
