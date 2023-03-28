@@ -228,19 +228,23 @@ export default function Display(props: DisplayProps) {
           onMouseMove={handleMouseMove}
           onTouchMove={handleMouseMove}
         >
-          <pre
+          <div
+            contentEditable={isTextEditable}
             className={`${
               !textValue && 'text-gray-400'
             } h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] border border-solid border-[#FDC7D4] bg-white p-2.5 focus:outline-none `}
             onInput={handleTextChange}
             onBlur={handleTextBlur}
             onFocus={handleTextFocus}
-            contentEditable={isTextEditable}
             onKeyDown={handleKeyDown}
-            dangerouslySetInnerHTML={{
-              __html: !textValue === '' ? textValue : MESSAGE.placeholder,
-            }}
-          ></pre>
+            suppressContentEditableWarning={true}
+          >
+            <pre
+              dangerouslySetInnerHTML={{
+                __html: !textValue === '' ? textValue : MESSAGE.placeholder,
+              }}
+            />
+          </div>
           {characters.map(({ offsetX, offsetY, path, id, category }: ItemObjectType, idx) => (
             <div
               className={`absolute flex flex-col items-end left-[${offsetX}px] top-[${offsetY}px] cursor-pointer`}
