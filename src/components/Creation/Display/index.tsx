@@ -2,9 +2,10 @@
 
 import type { Dispatch, SetStateAction } from 'react';
 
-import { ERROR_MESSAGE, MESSAGE } from '@/src/constants/message';
+import { MESSAGE } from '@/src/constants/message';
 import { MouseEvent, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import SelectionModal from '../../SelectionModal';
+import { handleKeyDown, handleTextBlur, handleTextFocus } from './staticFunctions';
 
 export type CategoryTypes = 'character' | 'sticker';
 export type ItemObjectType = {
@@ -15,9 +16,8 @@ export type ItemObjectType = {
   category: CategoryTypes;
 };
 type DisplayProps = {
-  selectedBackground: number | null;
-  selectedCharacter: number | null;
-  selectedSticker: number | null;
+  selectedBackground: number;
+  setSelectedBackground: (item: number) => void;
   textValue: string;
   setTextValue: (input: string) => void;
   visibleCancelBtn: string;
@@ -41,8 +41,7 @@ const customTypeArr = ['character', 'sticker'];
 export default function Display(props: DisplayProps) {
   const {
     selectedBackground,
-    selectedCharacter,
-    selectedSticker,
+    setSelectedBackground,
     textValue,
     setTextValue,
     visibleCancelBtn,
@@ -53,12 +52,11 @@ export default function Display(props: DisplayProps) {
     editableItem,
     setEditableItem,
     handleMouseMove,
-    setDraggable = { setDraggable },
+    setDraggable,
     setIsModalOpen,
   } = props;
-  const [isTextEditable, setIsTextEditable] = useState(true);
-  const [isModal, setIsModal] = useState(false);
 
+  const [isModal, setIsModal] = useState(false);
   const displayRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
   const makeItemEditable = (currId: number, category: CategoryTypes) => {
@@ -106,19 +104,12 @@ export default function Display(props: DisplayProps) {
     setEditableItem(null);
   };
 
-  const paintBackground = useCallback(() => {
+  const paintSessionBackground = useCallback(() => {
     const sessionBackground = sessionStorage.getItem('background');
-    let backgroundNumber: number;
-    if (selectedBackground === null) {
-      // 아직 선택된 배경이 없으면
-      backgroundNumber = parseInt(sessionBackground) || 0; // backgroundNumber에 session 배경 값 or 0 설정
-    } else {
-      // 선택한 배경이 있으면
-      backgroundNumber = selectedBackground; // backgroundNumber에 선택한 배경을 설정
-      sessionStorage.setItem('background', backgroundNumber); // session에 선택한 배경 설정
+    if (sessionBackground) {
+      setSelectedBackground(parseInt(sessionBackground));
     }
-    displayRef.current.style = `background-image:url(/backgrounds/${backgroundNumber}.svg); background-size:cover`; // background 이미지 그리기
-  }, [selectedBackground]);
+  }, [setSelectedBackground]);
 
   const clearAllItems = () => {
     setCharacters([]);
@@ -132,62 +123,18 @@ export default function Display(props: DisplayProps) {
     setIsModal(true);
   };
 
-  const handleTextBlur = event => {
-    if (event.target.innerText === '') {
-      event.target.innerText = MESSAGE.placeholder;
-    }
-  };
   const handleTextChange = event => {
     setTextValue(event.target.innerText);
-  };
-  const handleTextFocus = event => {
-    if (event.target.innerText === MESSAGE.placeholder) {
-      event.target.innerText = '';
-    }
   };
 
   const handleQuestionClick = () => {
     setIsModalOpen(true);
   };
-  const handleKeyDown = event => {
-    const lines = event.target.innerHTML.split('<div>');
-    // h-140px일 떄 최대 height는 8
-    // 8줄일 때 enter 입력 금지
-    if (event.key === 'Enter' && lines.length === 8) {
-      event.preventDefault();
-      return alert(ERROR_MESSAGE.message_length_limit);
-    }
-
-    // 8줄 이상이면 입력 금지
-    if (lines.length > 8 && event.key !== 'Backspace') {
-      event.preventDefault();
-      return alert(ERROR_MESSAGE.message_length_limit);
-    }
-
-    // 엔터를 입력하지 않고 그냥 쓸 때 100자 이상 입력 금지
-    if (event.target.innerText.length >= 120 && event.key !== 'Backspace') {
-      event.preventDefault();
-      return alert(ERROR_MESSAGE.message_length_limit);
-    }
-  };
 
   useEffect(() => {
-    // textarea readOnly 설정
-    if (selectedCharacter === null && selectedSticker === null) {
-      // 캐릭터, 스티커 둘 중 어느것도 선택하지 않았을 때
-      // textarea 편집 가능
-      setIsTextEditable(true);
-    } else {
-      // 캐릭터, 스티커 둘 중 하나를 선택했을 때
-      // textarea 편집 불가
-      setIsTextEditable(false);
-    }
-  }, [selectedBackground, selectedCharacter, selectedSticker]);
-
-  useEffect(() => {
-    // background 렌더링
-    paintBackground();
-  }, [paintBackground]);
+    // 첫 렌더링 시 세션에 background 있으면 렌더링
+    paintSessionBackground();
+  }, [paintSessionBackground]);
 
   useEffect(() => {
     if (!characters.length && !stickers.length) {
@@ -209,6 +156,11 @@ export default function Display(props: DisplayProps) {
         id="outerDisplay"
         ref={displayRef}
         className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-[#FDC7D4]"
+        style={{
+          'background-image': `url(/backgrounds/${selectedBackground}.svg)`,
+          'background-size': 'cover',
+        }}
+        priority
       >
         <div
           onClick={handleQuestionClick}
@@ -229,7 +181,7 @@ export default function Display(props: DisplayProps) {
           onTouchMove={handleMouseMove}
         >
           <div
-            contentEditable={isTextEditable}
+            contentEditable={true}
             className={`${
               !textValue && 'text-gray-400'
             } h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] border border-solid border-[#FDC7D4] bg-white p-2.5 focus:outline-none `}
