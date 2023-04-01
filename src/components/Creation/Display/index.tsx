@@ -16,7 +16,8 @@ export type ItemObjectType = {
   category: CategoryTypes;
 };
 type DisplayProps = {
-  selectedBackground: number | null;
+  selectedBackground: number;
+  setSelectedBackground: (item: number) => void;
   textValue: string;
   setTextValue: (input: string) => void;
   visibleCancelBtn: string;
@@ -40,6 +41,7 @@ const customTypeArr = ['character', 'sticker'];
 export default function Display(props: DisplayProps) {
   const {
     selectedBackground,
+    setSelectedBackground,
     textValue,
     setTextValue,
     visibleCancelBtn,
@@ -50,7 +52,7 @@ export default function Display(props: DisplayProps) {
     editableItem,
     setEditableItem,
     handleMouseMove,
-    setDraggable = { setDraggable },
+    setDraggable,
     setIsModalOpen,
   } = props;
 
@@ -102,19 +104,12 @@ export default function Display(props: DisplayProps) {
     setEditableItem(null);
   };
 
-  const paintBackground = useCallback(() => {
+  const paintSessionBackground = useCallback(() => {
     const sessionBackground = sessionStorage.getItem('background');
-    let backgroundNumber: number;
-    if (selectedBackground === null) {
-      // 아직 선택된 배경이 없으면
-      backgroundNumber = parseInt(sessionBackground) || 0; // backgroundNumber에 session 배경 값 or 0 설정
-    } else {
-      // 선택한 배경이 있으면
-      backgroundNumber = selectedBackground; // backgroundNumber에 선택한 배경을 설정
-      sessionStorage.setItem('background', backgroundNumber); // session에 선택한 배경 설정
+    if (sessionBackground) {
+      setSelectedBackground(parseInt(sessionBackground));
     }
-    displayRef.current.style = `background-image:url(/backgrounds/${backgroundNumber}.svg); background-size:cover`; // background 이미지 그리기
-  }, [selectedBackground]);
+  }, [setSelectedBackground]);
 
   const clearAllItems = () => {
     setCharacters([]);
@@ -137,9 +132,9 @@ export default function Display(props: DisplayProps) {
   };
 
   useEffect(() => {
-    // background 렌더링
-    paintBackground();
-  }, [paintBackground]);
+    // 첫 렌더링 시 세션에 background 있으면 렌더링
+    paintSessionBackground();
+  }, [paintSessionBackground]);
 
   useEffect(() => {
     if (!characters.length && !stickers.length) {
@@ -161,6 +156,11 @@ export default function Display(props: DisplayProps) {
         id="outerDisplay"
         ref={displayRef}
         className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-[#FDC7D4]"
+        style={{
+          'background-image': `url(/backgrounds/${selectedBackground}.svg)`,
+          'background-size': 'cover',
+        }}
+        priority
       >
         <div
           onClick={handleQuestionClick}

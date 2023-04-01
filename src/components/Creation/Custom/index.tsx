@@ -7,8 +7,8 @@ import { BACKGROUND_IMAGE, CHARACTER_IMAGE, STICKER_IMAGE } from './staticResour
 type CustomTypes = 'background' | 'character' | 'sticker';
 
 type CustomProps = {
-  selectedBackground: number | null;
-  setSelectedBackground: (item: number | null) => void;
+  selectedBackground: number;
+  setSelectedBackground: (item: number) => void;
   selectedItem: CustomTypes;
   setSelectedItem: (item: CustomTypes) => void;
   setEditableItem: (item: ItemObjectType) => void;
@@ -39,11 +39,11 @@ export default function Custom(props: CustomProps) {
 
   const handleBackgroundClick = (id: number) => {
     setSelectedBackground(id);
+    sessionStorage.setItem('background', id);
   };
 
   const handlerCustomTypeClick = (customType: CustomTypes) => {
     setSelectedItem(customType);
-    setSelectedBackground(null);
   };
 
   const handleItemClick = (src: string, category: CategoryTypes) => {

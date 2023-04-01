@@ -7,9 +7,7 @@ import { saveImg } from '@/src/utils';
 import { useRouter } from 'next/router';
 
 import Head from 'next/head';
-
 import { flushSync } from 'react-dom';
-
 import { v4 as uuidv4 } from 'uuid';
 
 import { ItemObjectType } from '../../src/components/Creation/Display';
@@ -25,7 +23,7 @@ type CustomTypes = 'background' | 'character' | 'sticker';
 const Creation = () => {
   const router = useRouter();
   const [selectedItem, setSelectedItem] = useState<CustomTypes>('background');
-  const [selectedBackground, setSelectedBackground] = useState<number | null>(null);
+  const [selectedBackground, setSelectedBackground] = useState<number>(0);
 
   const [textValue, setTextValue] = useState('');
   const [visibleCancelBtn, setVisibleCancelBtn] = useState('visible');
@@ -120,6 +118,7 @@ const Creation = () => {
         <PageTitle />
         <Display
           selectedBackground={selectedBackground}
+          setSelectedBackground={(item: number) => setSelectedBackground(item)}
           textValue={textValue}
           setTextValue={(input: string) => setTextValue(input)}
           visibleCancelBtn={visibleCancelBtn}
@@ -130,15 +129,12 @@ const Creation = () => {
           editableItem={editableItem}
           setEditableItem={(item: ItemObjectType) => setEditableItem(item)}
           handleMouseMove={handleMouseMove}
-          draggable={draggable}
           setDraggable={setDraggable}
           setIsModalOpen={setIsModalOpen}
         />
         <Custom
           selectedBackground={selectedBackground}
-          setSelectedBackground={(item: number | null) => setSelectedBackground(item)}
-          setSelectedCharacter={(item: number | null) => setSelectedCharacter(item)}
-          setSelectedSticker={(item: number | null) => setSelectedSticker(item)}
+          setSelectedBackground={(item: number) => setSelectedBackground(item)}
           selectedItem={selectedItem}
           setSelectedItem={(item: CustomTypes) => setSelectedItem(item)}
           setEditableItem={(item: ItemObjectType) => setEditableItem(item)}
