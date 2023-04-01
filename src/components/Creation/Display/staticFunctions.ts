@@ -14,7 +14,8 @@ export const handleTextFocus = (event: FocusEvent<HTMLDivElement>) => {
 };
 
 export const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-  const lines = event.target.innerHTML.split('<div>');
+  const target = event.target as HTMLElement;
+  const lines = target.innerHTML.split('<div>');
   // h-140px일 떄 최대 height는 8
   // 8줄일 때 enter 입력 금지
   if (event.key === 'Enter' && lines.length === 8) {
@@ -29,7 +30,7 @@ export const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
   }
 
   // 엔터를 입력하지 않고 그냥 쓸 때 100자 이상 입력 금지
-  if (event.target.innerText.length >= 120 && event.key !== 'Backspace') {
+  if (target.innerText.length >= 120 && event.key !== 'Backspace') {
     event.preventDefault();
     return alert(ERROR_MESSAGE.message_length_limit);
   }
