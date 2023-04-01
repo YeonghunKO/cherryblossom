@@ -16,8 +16,6 @@ export type ItemObjectType = {
 };
 type DisplayProps = {
   selectedBackground: number | null;
-  selectedCharacter: number | null;
-  selectedSticker: number | null;
   textValue: string;
   setTextValue: (input: string) => void;
   visibleCancelBtn: string;
@@ -41,8 +39,6 @@ const customTypeArr = ['character', 'sticker'];
 export default function Display(props: DisplayProps) {
   const {
     selectedBackground,
-    selectedCharacter,
-    selectedSticker,
     textValue,
     setTextValue,
     visibleCancelBtn,
@@ -56,9 +52,8 @@ export default function Display(props: DisplayProps) {
     setDraggable = { setDraggable },
     setIsModalOpen,
   } = props;
-  const [isTextEditable, setIsTextEditable] = useState(true);
-  const [isModal, setIsModal] = useState(false);
 
+  const [isModal, setIsModal] = useState(false);
   const displayRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
   const makeItemEditable = (currId: number, category: CategoryTypes) => {
@@ -132,13 +127,18 @@ export default function Display(props: DisplayProps) {
     setIsModal(true);
   };
 
+  const handleTextChange = event => {
+    setTextValue(event.target.innerText);
+  };
+
+  const handleQuestionClick = () => {
+    setIsModalOpen(true);
+  };
+
   const handleTextBlur = event => {
     if (event.target.innerText === '') {
       event.target.innerText = MESSAGE.placeholder;
     }
-  };
-  const handleTextChange = event => {
-    setTextValue(event.target.innerText);
   };
   const handleTextFocus = event => {
     if (event.target.innerText === MESSAGE.placeholder) {
@@ -146,9 +146,6 @@ export default function Display(props: DisplayProps) {
     }
   };
 
-  const handleQuestionClick = () => {
-    setIsModalOpen(true);
-  };
   const handleKeyDown = event => {
     const lines = event.target.innerHTML.split('<div>');
     // h-140px일 떄 최대 height는 8
@@ -170,19 +167,6 @@ export default function Display(props: DisplayProps) {
       return alert(ERROR_MESSAGE.message_length_limit);
     }
   };
-
-  useEffect(() => {
-    // textarea readOnly 설정
-    if (selectedCharacter === null && selectedSticker === null) {
-      // 캐릭터, 스티커 둘 중 어느것도 선택하지 않았을 때
-      // textarea 편집 가능
-      setIsTextEditable(true);
-    } else {
-      // 캐릭터, 스티커 둘 중 하나를 선택했을 때
-      // textarea 편집 불가
-      setIsTextEditable(false);
-    }
-  }, [selectedBackground, selectedCharacter, selectedSticker]);
 
   useEffect(() => {
     // background 렌더링
@@ -229,7 +213,7 @@ export default function Display(props: DisplayProps) {
           onTouchMove={handleMouseMove}
         >
           <div
-            contentEditable={isTextEditable}
+            contentEditable={true}
             className={`${
               !textValue && 'text-gray-400'
             } h-[140px] w-[220px] resize-none overflow-hidden whitespace-pre-wrap break-words rounded-[10px] border border-solid border-[#FDC7D4] bg-white p-2.5 focus:outline-none `}

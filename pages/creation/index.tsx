@@ -26,8 +26,6 @@ const Creation = () => {
   const router = useRouter();
   const [selectedItem, setSelectedItem] = useState<CustomTypes>('background');
   const [selectedBackground, setSelectedBackground] = useState<number | null>(null);
-  const [selectedCharacter, setSelectedCharacter] = useState<number | null>(null);
-  const [selectedSticker, setSelectedSticker] = useState<number | null>(null);
 
   const [textValue, setTextValue] = useState('');
   const [visibleCancelBtn, setVisibleCancelBtn] = useState('visible');
@@ -122,8 +120,6 @@ const Creation = () => {
         <PageTitle />
         <Display
           selectedBackground={selectedBackground}
-          selectedCharacter={selectedCharacter}
-          selectedSticker={selectedSticker}
           textValue={textValue}
           setTextValue={(input: string) => setTextValue(input)}
           visibleCancelBtn={visibleCancelBtn}
@@ -140,8 +136,6 @@ const Creation = () => {
         />
         <Custom
           selectedBackground={selectedBackground}
-          selectedCharacter={selectedCharacter}
-          selectedSticker={selectedSticker}
           setSelectedBackground={(item: number | null) => setSelectedBackground(item)}
           setSelectedCharacter={(item: number | null) => setSelectedCharacter(item)}
           setSelectedSticker={(item: number | null) => setSelectedSticker(item)}
