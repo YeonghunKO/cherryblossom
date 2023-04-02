@@ -6,6 +6,7 @@ import { MESSAGE } from '@/src/constants/message';
 import { MouseEvent, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import SelectionModal from '../../SelectionModal';
 import { handleKeyDown, handleTextBlur, handleTextFocus } from './staticFunctions';
+import Image from 'next/image';
 
 export type CategoryTypes = 'character' | 'sticker';
 export type ItemObjectType = {
@@ -156,12 +157,14 @@ export default function Display(props: DisplayProps) {
         id="outerDisplay"
         ref={displayRef}
         className="relative flex h-[300px] w-[320px] items-center justify-center overflow-hidden rounded-lg border border-solid border-[#FDC7D4]"
-        style={{
-          'background-image': `url(/backgrounds/${selectedBackground}.svg)`,
-          'background-size': 'cover',
-        }}
-        priority
       >
+        <Image
+          src={`/backgrounds/${selectedBackground}.svg`}
+          alt={'display'}
+          className="object-cover"
+          fill
+          priority
+        />
         <div
           onClick={handleQuestionClick}
           className="absolute top-[10px] right-[10px] z-10 cursor-pointer"
@@ -176,7 +179,7 @@ export default function Display(props: DisplayProps) {
         </div>
         <div
           id="display"
-          className="absolute flex h-full w-screen items-center justify-center overflow-hidden web:w-[380px]"
+          className="absolute flex h-full w-[440px] items-center justify-center overflow-hidden"
           onMouseMove={handleMouseMove}
           onTouchMove={handleMouseMove}
         >
