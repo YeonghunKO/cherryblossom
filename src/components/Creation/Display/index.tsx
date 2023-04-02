@@ -179,7 +179,7 @@ export default function Display(props: DisplayProps) {
         </div>
         <div
           id="display"
-          className="absolute flex h-full w-screen items-center justify-center overflow-hidden web:w-[380px]"
+          className="absolute flex h-full w-[440px] items-center justify-center overflow-hidden"
           onMouseMove={handleMouseMove}
           onTouchMove={handleMouseMove}
         >
