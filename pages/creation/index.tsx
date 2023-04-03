@@ -1,8 +1,6 @@
 import { GetStaticPropsContext } from 'next';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
-
-const CreationComponent = dynamic(() => import('./CreationComponent'));
+import CreationComponent from './CreationComponent';
 
 const Creation = () => {
   return (
