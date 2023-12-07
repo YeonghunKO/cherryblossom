@@ -7,7 +7,7 @@ export const copyLink = async (
 ) => {
   try {
     const textarea: HTMLTextAreaElement = document.createElement('textarea');
-    textarea.value = `https://cherryblossom-ten.vercel.app/received/${imageName}`;
+    textarea.value = `https://cherryblossom-chi.vercel.app/received/${imageName}`;
     textarea.style.position = 'fixed';
     document.body.appendChild(textarea);
     textarea.focus();
