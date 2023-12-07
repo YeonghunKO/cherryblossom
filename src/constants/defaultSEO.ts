@@ -4,7 +4,7 @@ export const DEFAULT_SEO = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://cherryblossom-ten.vercel.app/',
+    url: 'https://cherryblossom-chi.vercel.app/',
     title: '나랑 벚꽃 보러 가지 않을래? 🎶🎵',
     description: '나랑 놀아라',
     images: [

@@ -40,7 +40,7 @@
 
 
 
-## [🔗 배포 URL](https://cherryblossom-ten.vercel.app/)
+## [🔗 배포 URL](https://cherryblossom-chi.vercel.app)
 Vercel을 활용하여 배포하였습니다.
 
 ## 👁‍🗨 데모
