@@ -9,7 +9,7 @@ const SEO = ({ imageName }: { imageName: string }) => {
         openGraph={{
           type: 'website',
           locale: 'ko_KR',
-          url: `https://cherryblossom-ten.vercel.app/received/${imageName}`,
+          url: `https://cherryblossom-chi.vercel.app/received/${imageName}`,
           title: '초대장이 왔어요!! 놀아주세요😋',
           description: '나랑 놀아라',
           images: [
